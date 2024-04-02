@@ -1,6 +1,24 @@
+
+
 /** Main */
 class Main {
 	function void main() {
+	    var Card card0;
+		var Card card1;
+		var Card card6;
+
+		let card0 = Card.new(1, 0, false);
+		do card0.draw();
+	    
+		let card1 = Card.new(1, 1, false);
+		do card1.draw();
+		
+		let card6 = Card.new(1, 6, true);
+		do card6.draw();
+
+		do card0.dispose();
+        do card1.dispose();
+		do card6.dispose();
 		return;
 	}
 }

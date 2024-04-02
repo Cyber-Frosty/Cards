@@ -1,0 +1,58 @@
+class Graphics {
+    function void drawFullCard(int column) {
+	    var int memAddress;
+		var int i;
+		var int colAdd;
+		var int leftSide;
+		var int rightSide;
+
+		// первый сет ряда 16384
+		// последний сет ряда 16415
+		
+		let colAdd = column * 4;
+		do Memory.poke(16482+colAdd, -4096); // 16386+(32*3)
+		do Memory.poke(18402+colAdd, -4096); // 16386+(32*63)
+		do Memory.poke(16485+colAdd, 15); // 16389+(32*3)
+		do Memory.poke(18405+colAdd, 15); // 16389+(32*63)
+		do Memory.poke(16483+colAdd, -1); // 16387+(32*3)
+		do Memory.poke(16484+colAdd, -1); // 16388+(32*3)
+		do Memory.poke(18403+colAdd, -1);
+		do Memory.poke(18404+colAdd, -1);
+
+		let i = 128;
+		let leftSide = 16386+colAdd;
+		let rightSide = 16389+colAdd;
+		while (i < 1984) {
+		    do Memory.poke(leftSide+i, 4096);
+			do Memory.poke(rightSide+i, 8);
+			let i = i + 32;
+        }
+
+		return;
+	}
+
+	function void drawCardPart(int column) {
+	    var int memAddress;
+		var int i;
+		var int colAdd;
+		var int leftSide;
+		var int rightSide;
+		
+		let colAdd = column * 4;
+		do Memory.poke(16482+colAdd, -4096); // 16386+(32*3)
+		do Memory.poke(16485+colAdd, 15); // 16389+(32*3)
+		do Memory.poke(16483+colAdd, -1); // 16387+(32*3)
+		do Memory.poke(16484+colAdd, -1); // 16388+(32*3)
+
+		let i = 128;
+		let leftSide = 16386+colAdd;
+		let rightSide = 16389+colAdd;
+		while (i < 352) {
+		    do Memory.poke(leftSide+i, 4096);
+			do Memory.poke(rightSide+i, 8);
+			let i = i + 32;
+        }
+
+		return;
+	}
+}

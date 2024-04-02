@@ -1,0 +1,34 @@
+class Card {
+    field int num;
+	field int column;
+	field boolean isFront;
+
+	constructor Card new(int x, int col, boolean front) {
+	    //col [0;6]
+	    let num = x;
+		let column = col;
+		let isFront = front;
+		return this;
+	}
+	method void dispose() {
+		do Memory.deAlloc(this);
+		return;
+	}
+	method void draw() {
+	    if (isFront) {
+		    do Graphics.drawFullCard(column);
+		}
+	    else {
+		    do Graphics.drawCardPart(column);
+		}
+		return;
+	}
+	method void putFront() {
+	    let isFront = true;
+		return;
+	}
+	method void putBack() {
+	    let isFront = false;
+		return;
+	}
+}
