@@ -1,13 +1,19 @@
 class Card {
-    field int num;
+	field int value;
+	field int suit;
 	field int column;
 	field boolean isFront;
+	field boolean isOpened;
 
-	constructor Card new(int x, int col, boolean front) {
+	constructor Card new(int x, int y, int col, boolean front, boolean opened) {
 	    //col [0;6]
-	    let num = x;
+		//value: 1-13 (11=jack, 12=queen, 13=king)
+		//suit: 0=diamond, 1=heart, 2=spade, 3=club
+	    let value = x;
+		let suit = y;
 		let column = col;
 		let isFront = front;
+		let isOpened = opened;
 		return this;
 	}
 	method void dispose() {
@@ -16,10 +22,20 @@ class Card {
 	}
 	method void draw() {
 	    if (isFront) {
-		    do Graphics.drawFullCard(column);
+		    if (isOpened) {
+			    do Graphics.drawFullCard(column, value, suit);
+			}
+			else {
+			    do Graphics.drawClosedCardFull(column);
+			}
 		}
 	    else {
-		    do Graphics.drawCardPart(column);
+		    if (isOpened) {
+			    do Graphics.drawCardPart(column, value, suit);
+			}
+			else {
+			    do Graphics.drawClosedCardPart(column);
+			}
 		}
 		return;
 	}

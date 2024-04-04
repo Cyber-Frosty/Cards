@@ -5,15 +5,24 @@ class Main {
 	function void main() {
 	    var Card card0;
 		var Card card1;
+		var Card card4;
+		var Card card5;
 		var Card card6;
+		do Graphics.init();
 
-		let card0 = Card.new(1, 0, false);
+		let card0 = Card.new(1, 0, 0, false, true);
 		do card0.draw();
 	    
-		let card1 = Card.new(1, 1, false);
+		let card1 = Card.new(4, 1, 1, false, true);
 		do card1.draw();
 		
-		let card6 = Card.new(1, 6, true);
+		let card4 = Card.new(4, 1, 4, false, false);
+		do card4.draw();
+		
+		let card5 = Card.new(4, 1, 5, true, false);
+		do card5.draw();
+		
+		let card6 = Card.new(11, 2, 6, true, true);
 		do card6.draw();
 
 		do card0.dispose();

@@ -1,5 +1,220 @@
 class Graphics {
-    function void drawFullCard(int column) {
+    static Array diamond;
+	static Array heart;
+	static Array spade;
+	static Array club;
+    static Array suitAddresses;
+
+	static Array ace;
+	static Array two;
+	static Array three;
+	static Array four;
+	static Array five;
+	static Array six;
+	static Array seven;
+	static Array eight;
+	static Array nine;
+	static Array ten;
+	static Array jack;
+	static Array queen;
+	static Array king;
+	static Array valueAddresses;
+
+    function void init() {
+	    let diamond = Array.new(7);
+		let diamond[0] = 1024;
+		let diamond[1] = 2560;
+		let diamond[2] = 4352;
+		let diamond[3] = 8320;
+		let diamond[4] = 4352;
+		let diamond[5] = 2560;
+		let diamond[6] = 1024;
+		
+		let heart = Array.new(7);
+		let heart[0] = 4352;
+		let heart[1] = 10880;
+		let heart[2] = 17472;
+		let heart[3] = 8320;
+		let heart[4] = 4352;
+		let heart[5] = 2560;
+		let heart[6] = 1024;
+		
+		let spade = Array.new(7);
+		let spade[0] = 1024;
+		let spade[1] = 3584;
+		let spade[2] = 7936;
+		let spade[3] = 16256;
+		let spade[4] = 32704;
+		let spade[5] = 9344;
+		let spade[6] = 3584;
+		
+		let club = Array.new(7);
+		let club[0] = 1024;
+		let club[1] = 3584;
+		let club[2] = 5376;
+		let club[3] = 16256;
+		let club[4] = 5376;
+		let club[5] = 1024;
+		let club[6] = 3584;
+		
+		let suitAddresses = Array.new(4);
+		let suitAddresses[0] = diamond;
+		let suitAddresses[1] = heart;
+		let suitAddresses[2] = spade;
+		let suitAddresses[3] = club;
+		
+		let ace = Array.new(7);
+		let ace[0] = 4;
+		let ace[1] = 10;
+		let ace[2] = 17;
+		let ace[3] = 17;
+		let ace[4] = 31;
+		let ace[5] = 17;
+		let ace[6] = 17;
+		
+		let two = Array.new(7);
+		let two[0] = 12;
+		let two[1] = 18;
+		let two[2] = 18;
+		let two[3] = 8;
+		let two[4] = 4;
+		let two[5] = 2;
+		let two[6] = 30;
+		
+		let three = Array.new(7);
+		let three[0] = 12;
+		let three[1] = 18;
+		let three[2] = 8;
+		let three[3] = 12;
+		let three[4] = 16;
+		let three[5] = 18;
+		let three[6] = 12;
+		
+		let four = Array.new(7);
+		let four[0] = 8;
+		let four[1] = 12;
+		let four[2] = 10;
+		let four[3] = 9;
+		let four[4] = 31;
+		let four[5] = 8;
+		let four[6] = 8;
+		
+		let five = Array.new(7);
+		let five[0] = 31;
+		let five[1] = 1;
+		let five[2] = 15;
+		let five[3] = 24;
+		let five[4] = 16;
+		let five[5] = 17;
+		let five[6] = 14;
+		
+		let six = Array.new(7);
+		let six[0] = 30;
+		let six[1] = 1;
+		let six[2] = 1;
+		let six[3] = 15;
+		let six[4] = 17;
+		let six[5] = 17;
+		let six[6] = 14;
+		
+		let seven = Array.new(7);
+		let seven[0] = 31;
+		let seven[1] = 17;
+		let seven[2] = 8;
+		let seven[3] = 4;
+		let seven[4] = 4;
+		let seven[5] = 4;
+		let seven[6] = 4;
+		
+		let eight = Array.new(7);
+		let eight[0] = 14;
+		let eight[1] = 17;
+		let eight[2] = 10;
+		let eight[3] = 4;
+		let eight[4] = 10;
+		let eight[5] = 17;
+		let eight[6] = 14;
+		
+		let nine = Array.new(7);
+		let nine[0] = 14;
+		let nine[1] = 17;
+		let nine[2] = 17;
+		let nine[3] = 30;
+		let nine[4] = 16;
+		let nine[5] = 16;
+		let nine[6] = 15;
+		
+		let ten = Array.new(7);
+		let ten[0] = 29;
+		let ten[1] = 21;
+		let ten[2] = 21;
+		let ten[3] = 21;
+		let ten[4] = 21;
+		let ten[5] = 21;
+		let ten[6] = 29;
+		
+		let jack = Array.new(7);
+		let jack[0] = 30;
+		let jack[1] = 16;
+		let jack[2] = 16;
+		let jack[3] = 16;
+		let jack[4] = 16;
+		let jack[5] = 18;
+		let jack[6] = 12;
+		
+		let queen = Array.new(7);
+		let queen[0] = 6;
+		let queen[1] = 9;
+		let queen[2] = 9;
+		let queen[3] = 9;
+		let queen[4] = 9;
+		let queen[5] = 30;
+		let queen[6] = 16;
+		
+		let king = Array.new(7);
+		let king[0] = 25;
+		let king[1] = 9;
+		let king[2] = 5;
+		let king[3] = 7;
+		let king[4] = 9;
+		let king[5] = 9;
+		let king[6] = 25;
+		
+		let valueAddresses = Array.new(14);
+		let valueAddresses[0] = ace;
+	    let valueAddresses[1] = two;
+	    let valueAddresses[2] = three;
+	    let valueAddresses[3] = four;
+	    let valueAddresses[4] = five;
+	    let valueAddresses[5] = six;
+	    let valueAddresses[6] = seven;
+	    let valueAddresses[7] = eight;
+	    let valueAddresses[8] = nine;
+	    let valueAddresses[9] = ten;
+	    let valueAddresses[10] = jack;
+	    let valueAddresses[11] = queen;
+	    let valueAddresses[12] = king;
+	    let valueAddresses[13] = valueAddresses;
+		return;
+	}
+	
+	function void drawHeader(int rowAdd, int value, int symbol) {
+	    var int i;
+		var Array valuePic;
+		var Array suitPic;
+
+        let valuePic = valueAddresses[value - 1];
+        let suitPic = suitAddresses[symbol];
+		let i = 0;
+		while (i < 8) {
+		    do Memory.poke(rowAdd, valuePic[i] + suitPic[i]);
+			let rowAdd = rowAdd + 32;
+			let i = i + 1;
+        }
+		return;
+	}
+	
+    function void drawFullCard(int column, int value, int symbol) {
 	    var int memAddress;
 		var int i;
 		var int colAdd;
@@ -11,13 +226,15 @@ class Graphics {
 		
 		let colAdd = column * 4;
 		do Memory.poke(16482+colAdd, -4096); // 16386+(32*3)
-		do Memory.poke(18402+colAdd, -4096); // 16386+(32*63)
+		do Memory.poke(18370+colAdd, -4096); // 16386+(32*62)
 		do Memory.poke(16485+colAdd, 15); // 16389+(32*3)
-		do Memory.poke(18405+colAdd, 15); // 16389+(32*63)
+		do Memory.poke(18373+colAdd, 15); // 16389+(32*62)
 		do Memory.poke(16483+colAdd, -1); // 16387+(32*3)
 		do Memory.poke(16484+colAdd, -1); // 16388+(32*3)
-		do Memory.poke(18403+colAdd, -1);
-		do Memory.poke(18404+colAdd, -1);
+		do Memory.poke(18371+colAdd, -1);
+		do Memory.poke(18372+colAdd, -1);
+		
+		do Graphics.drawHeader(16515+colAdd, value, symbol);
 
 		let i = 128;
 		let leftSide = 16386+colAdd;
@@ -30,8 +247,90 @@ class Graphics {
 
 		return;
 	}
+	
+	function void drawClosedCardFull(int column) {
+	    var int add;
+		var int i;
 
-	function void drawCardPart(int column) {
+	    let add = (column * 4) + 16482;
+		do Memory.poke(add, -4096); // 16386+(32*3)
+		let add = add + 1;
+		do Memory.poke(add, -1); // 16387+(32*3)
+		let add = add + 1;
+		do Memory.poke(add, -1); // 16388+(32*3)
+		let add = add + 1;
+		do Memory.poke(add, 15); // 16389+(32*3)
+		let add = add + 29;
+		
+		do Memory.poke(add, 4096);
+		let add = add + 3;
+		do Memory.poke(add, 8);
+		let add = add + 29;
+		
+		let i = 56;
+		while (i > 0) {
+		    do Memory.poke(add, -12288);
+		    let add = add + 1;
+		    do Memory.poke(add, -1);
+			let add = add + 1;
+			do Memory.poke(add, -1);
+			let add = add + 1;
+			do Memory.poke(add, 11);
+			let add = add + 29;
+		    let i = i - 1;
+		}
+		
+		do Memory.poke(add, 4096);
+		let add = add + 3;
+		do Memory.poke(add, 8);
+		let add = add + 29;
+		
+		do Memory.poke(add, -4096);
+		let add = add + 1;
+		do Memory.poke(add, -1);
+		let add = add + 1;
+		do Memory.poke(add, -1);
+		let add = add + 1;
+		do Memory.poke(add, 15);
+
+		return;
+	}
+	
+	function void drawClosedCardPart(int column) {
+	    var int add;
+		var int i;
+
+	    let add = (column * 4) + 16482;
+		do Memory.poke(add, -4096); // 16386+(32*3)
+		let add = add + 1;
+		do Memory.poke(add, -1); // 16387+(32*3)
+		let add = add + 1;
+		do Memory.poke(add, -1); // 16388+(32*3)
+		let add = add + 1;
+		do Memory.poke(add, 15); // 16389+(32*3)
+		let add = add + 29;
+		
+		do Memory.poke(add, 4096);
+		let add = add + 3;
+		do Memory.poke(add, 8);
+		let add = add + 29;
+		
+		let i = 6;
+		while (i > 0) {
+		    do Memory.poke(add, -12288);
+		    let add = add + 1;
+		    do Memory.poke(add, -1);
+			let add = add + 1;
+			do Memory.poke(add, -1);
+			let add = add + 1;
+			do Memory.poke(add, 11);
+			let add = add + 29;
+		    let i = i - 1;
+		}
+		return;
+	}
+
+	function void drawCardPart(int column, int value, int symbol) {
 	    var int memAddress;
 		var int i;
 		var int colAdd;
@@ -43,6 +342,8 @@ class Graphics {
 		do Memory.poke(16485+colAdd, 15); // 16389+(32*3)
 		do Memory.poke(16483+colAdd, -1); // 16387+(32*3)
 		do Memory.poke(16484+colAdd, -1); // 16388+(32*3)
+		
+		do Graphics.drawHeader(16515+colAdd, value, symbol);
 
 		let i = 128;
 		let leftSide = 16386+colAdd;
