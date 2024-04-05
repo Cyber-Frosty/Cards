@@ -44,6 +44,12 @@ class Main {
 
 		let card15 = Card.new(3, 3, 2, true, false);
 		do card15.draw(1, 0);
+		
+		do Graphics.addCursor(1, 0, 0);
+		//do Graphics.removeCursor(1, 0, 0);
+		
+		do Graphics.selectSubdeck(1, 1, 1, 2);
+		//do Graphics.removeSubdeckSelection(1, 1, 1, 2);
 
 		do card0.dispose();
         do card1.dispose();

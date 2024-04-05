@@ -21,6 +21,9 @@ class Graphics {
 	static Array valueAddresses;
 	
 	static Array rows;
+	
+	static Array leftArrow;
+	static Array rightArrow;
 
     function void init() {
 	    let diamond = Array.new(7);
@@ -201,7 +204,51 @@ class Graphics {
 		let rows = Array.new(2);
 		let rows[0] = 16482;
 		let rows[1] = 18498;
+		
+		let leftArrow = Array.new(13);
+		let leftArrow[0] = 16;
+		let leftArrow[1] = 48;
+		let leftArrow[2] = 112;
+		let leftArrow[3] = 240;
+		let leftArrow[4] = 496;
+		let leftArrow[5] = 1008;
+		let leftArrow[6] = 2032;
+		let leftArrow[7] = 1008;
+		let leftArrow[8] = 496;
+		let leftArrow[9] = 240;
+		let leftArrow[10] = 112;
+		let leftArrow[11] = 48;
+		let leftArrow[12] = 16;
+		
+		let rightArrow = Array.new(13);
+		let rightArrow[0] = 2048;
+		let rightArrow[1] = 3072;
+		let rightArrow[2] = 3584;
+		let rightArrow[3] = 3840;
+		let rightArrow[4] = 3968;
+		let rightArrow[5] = 4032;
+		let rightArrow[6] = 4064;
+		let rightArrow[7] = 4032;
+		let rightArrow[8] = 3968;
+		let rightArrow[9] = 3840;
+		let rightArrow[10] = 3584;
+		let rightArrow[11] = 3072;
+		let rightArrow[12] = 2048;
+		
 		return;
+	}
+
+	function int drawCardHorizontalLine(int address) {
+		do Memory.poke(address, -4096);
+		let address = address + 1;
+		do Memory.poke(address, -1);
+		let address = address + 1;
+		do Memory.poke(address, -1);
+		let address = address + 1;
+		do Memory.poke(address, 15);
+		let address = address + 29;
+
+		return address;
 	}
 	
 	function void drawHeader(int rowAdd, int value, int symbol) {
@@ -220,24 +267,114 @@ class Graphics {
 		return;
 	}
 	
+	function void addCursor(int column, int row, int layer) {
+	    var int i;
+	    var int leftAddr;
+		var int rightAddr;
+		
+		let leftAddr = rows[row] + 768 + (layer * 256) + (column * 4);
+		let rightAddr = leftAddr + 3;
+		let i = 0;
+		while (i < 13) {
+			do Memory.poke(leftAddr, Memory.peek(leftAddr) + leftArrow[i]);
+			do Memory.poke(rightAddr, Memory.peek(rightAddr) + rightArrow[i]);
+			let leftAddr = leftAddr + 32;
+			let rightAddr = rightAddr + 32;
+			let i = i + 1;
+		}
+		
+		return;
+	}
+
+	function void removeCursor(int column, int row, int layer) {
+	    var int i;
+	    var int leftAddr;
+		var int rightAddr;
+		
+		let leftAddr = rows[row] + 768 + (layer * 256) + (column * 4);
+		let rightAddr = leftAddr + 3;
+		let i = 0;
+		while (i < 13) {
+			do Memory.poke(leftAddr, Memory.peek(leftAddr) - leftArrow[i]);
+			do Memory.poke(rightAddr, Memory.peek(rightAddr) - rightArrow[i]);
+			let leftAddr = leftAddr + 32;
+			let rightAddr = rightAddr + 32;
+			let i = i + 1;
+		}
+		
+		return;
+	}
+	
+	function void removeSubdeckSelection(int column, int row, int upperLayer, int lowerLayer) {
+	    do Graphics.subdeckCommon(1, 1, 1, 2, -1);
+		return;
+	}
+	
+	function void selectSubdeck(int column, int row, int upperLayer, int lowerLayer) {
+	    do Graphics.subdeckCommon(1, 1, 1, 2, 1);
+		return;
+	}
+	
+	function void subdeckCommon(int column, int row, int upperLayer, int lowerLayer, int coeff) {
+	    var int i;
+	    var int leftAddr;
+		var int rightAddr;
+		
+		let leftAddr = rows[row] + (upperLayer * 256) + (column * 4);
+		let rightAddr = leftAddr + 3;
+		
+		do Memory.poke(leftAddr, Memory.peek(leftAddr) + (768 * coeff));
+		do Memory.poke(rightAddr, Memory.peek(rightAddr) + (192 * coeff));
+		let leftAddr = leftAddr + 32;
+		let rightAddr = rightAddr + 32;
+		do Memory.poke(leftAddr, Memory.peek(leftAddr) + (128 * coeff));
+		do Memory.poke(rightAddr, Memory.peek(rightAddr) + (256 * coeff));
+		let leftAddr = leftAddr + 32;
+		let rightAddr = rightAddr + 32;
+		do Memory.poke(leftAddr, Memory.peek(leftAddr) + (64 * coeff));
+		do Memory.poke(rightAddr, Memory.peek(rightAddr) + (512 * coeff));
+		let leftAddr = leftAddr + 32;
+		let rightAddr = rightAddr + 32;
+		do Memory.poke(leftAddr, Memory.peek(leftAddr) + (32 * coeff));
+		do Memory.poke(rightAddr, Memory.peek(rightAddr) + (1024 * coeff));
+		let leftAddr = leftAddr + 32;
+		let rightAddr = rightAddr + 32;
+		
+		let i = (lowerLayer - upperLayer) * 8 + 52;
+		while (i > 0) {
+		    do Memory.poke(leftAddr, Memory.peek(leftAddr) + (16 * coeff));
+		    do Memory.poke(rightAddr, Memory.peek(rightAddr) + (2048 * coeff));
+			let leftAddr = leftAddr + 32;
+		    let rightAddr = rightAddr + 32;
+			let i = i - 1;
+		}
+		
+        do Memory.poke(leftAddr, Memory.peek(leftAddr) + (32 * coeff));
+		do Memory.poke(rightAddr, Memory.peek(rightAddr) + (1024 * coeff));
+		let leftAddr = leftAddr + 32;
+		let rightAddr = rightAddr + 32;
+		do Memory.poke(leftAddr, Memory.peek(leftAddr) + (64 * coeff));
+		do Memory.poke(rightAddr, Memory.peek(rightAddr) + (512 * coeff));
+		let leftAddr = leftAddr + 32;
+		let rightAddr = rightAddr + 32;
+		do Memory.poke(leftAddr, Memory.peek(leftAddr) + (128 * coeff));
+		do Memory.poke(rightAddr, Memory.peek(rightAddr) + (256 * coeff));
+		let leftAddr = leftAddr + 32;
+		let rightAddr = rightAddr + 32;
+		do Memory.poke(leftAddr, Memory.peek(leftAddr) + (768 * coeff));
+		do Memory.poke(rightAddr, Memory.peek(rightAddr) + (192 * coeff));
+		
+		return;
+	}
+	
     function void drawFullCard(int column, int row, int layer, int value, int symbol) {
 		var int i;
 		var int add;
 		var int leftSide;
 		var int rightSide;
-
-		// первый сет ряда 16384
-		// последний сет ряда 16415
 		
 		let add = rows[row] + (layer * 256) + (column * 4);
-		do Memory.poke(add, -4096);
-		let add = add + 1;
-		do Memory.poke(add, -1);
-		let add = add + 1;
-		do Memory.poke(add, -1);
-		let add = add + 1;
-		do Memory.poke(add, 15); // 16389+(32*3)=16485
-		let add = add + 29;
+		let add = Graphics.drawCardHorizontalLine(add);
 		
 		do Graphics.drawHeader(add+1, value, symbol);
 
@@ -252,14 +389,7 @@ class Graphics {
 			let i = i - 1;
         }
 		
-		let add = leftSide;
-		do Memory.poke(add, -4096);
-		let add = add + 1;
-		do Memory.poke(add, -1);
-		let add = add + 1;
-		do Memory.poke(add, -1);
-		let add = add + 1;
-		do Memory.poke(add, 15);
+		let add = Graphics.drawCardHorizontalLine(leftSide);
 
 		return;
 	}
@@ -268,16 +398,9 @@ class Graphics {
 	    var int add;
 		var int i;
 
-	    let add = rows[row] + (layer * 256) + (column * 4);
-		do Memory.poke(add, -4096); // 16386+(32*3)
-		let add = add + 1;
-		do Memory.poke(add, -1); // 16387+(32*3)
-		let add = add + 1;
-		do Memory.poke(add, -1); // 16388+(32*3)
-		let add = add + 1;
-		do Memory.poke(add, 15); // 16389+(32*3)
-		let add = add + 29;
-		
+		let add = rows[row] + (layer * 256) + (column * 4);
+		let add = Graphics.drawCardHorizontalLine(add);
+
 		do Memory.poke(add, 4096);
 		let add = add + 3;
 		do Memory.poke(add, 8);
@@ -301,13 +424,7 @@ class Graphics {
 		do Memory.poke(add, 8);
 		let add = add + 29;
 		
-		do Memory.poke(add, -4096);
-		let add = add + 1;
-		do Memory.poke(add, -1);
-		let add = add + 1;
-		do Memory.poke(add, -1);
-		let add = add + 1;
-		do Memory.poke(add, 15);
+		let add = Graphics.drawCardHorizontalLine(add);
 
 		return;
 	}
@@ -316,16 +433,9 @@ class Graphics {
 	    var int add;
 		var int i;
 
-	    let add = rows[row] + (layer * 256) + (column * 4);
-		do Memory.poke(add, -4096); // 16386+(32*3)
-		let add = add + 1;
-		do Memory.poke(add, -1); // 16387+(32*3)
-		let add = add + 1;
-		do Memory.poke(add, -1); // 16388+(32*3)
-		let add = add + 1;
-		do Memory.poke(add, 15); // 16389+(32*3)
-		let add = add + 29;
-		
+		let add = rows[row] + (layer * 256) + (column * 4);
+		let add = Graphics.drawCardHorizontalLine(add);
+
 		do Memory.poke(add, 4096);
 		let add = add + 3;
 		do Memory.poke(add, 8);
@@ -353,15 +463,7 @@ class Graphics {
 		var int rightSide;
 		
 		let add = rows[row] + (layer * 256) + (column * 4);
-		do Memory.poke(add, -4096);
-		let add = add + 1;
-		do Memory.poke(add, -1);
-		let add = add + 1;
-		do Memory.poke(add, -1);
-		let add = add + 1;
-		do Memory.poke(add, 15);
-		let add = add + 29;
-		
+		let add = Graphics.drawCardHorizontalLine(add);
 		do Graphics.drawHeader(add+1, value, symbol);
 
 		let i = 7;
