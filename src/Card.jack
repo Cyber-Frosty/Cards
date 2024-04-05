@@ -20,21 +20,21 @@ class Card {
 		do Memory.deAlloc(this);
 		return;
 	}
-	method void draw() {
+	method void draw(int row, int layer) {
 	    if (isFront) {
 		    if (isOpened) {
-			    do Graphics.drawFullCard(column, value, suit);
+			    do Graphics.drawFullCard(column, row, layer, value, suit);
 			}
 			else {
-			    do Graphics.drawClosedCardFull(column);
+			    do Graphics.drawClosedCardFull(column, row, layer);
 			}
 		}
 	    else {
 		    if (isOpened) {
-			    do Graphics.drawCardPart(column, value, suit);
+			    do Graphics.drawCardPart(column, row, layer, value, suit);
 			}
 			else {
-			    do Graphics.drawClosedCardPart(column);
+			    do Graphics.drawClosedCardPart(column, row, layer);
 			}
 		}
 		return;

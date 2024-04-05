@@ -19,6 +19,8 @@ class Graphics {
 	static Array queen;
 	static Array king;
 	static Array valueAddresses;
+	
+	static Array rows;
 
     function void init() {
 	    let diamond = Array.new(7);
@@ -195,6 +197,10 @@ class Graphics {
 	    let valueAddresses[11] = queen;
 	    let valueAddresses[12] = king;
 	    let valueAddresses[13] = valueAddresses;
+		
+		let rows = Array.new(2);
+		let rows[0] = 16482;
+		let rows[1] = 18498;
 		return;
 	}
 	
@@ -214,45 +220,55 @@ class Graphics {
 		return;
 	}
 	
-    function void drawFullCard(int column, int value, int symbol) {
-	    var int memAddress;
+    function void drawFullCard(int column, int row, int layer, int value, int symbol) {
 		var int i;
-		var int colAdd;
+		var int add;
 		var int leftSide;
 		var int rightSide;
 
 		// первый сет ряда 16384
 		// последний сет ряда 16415
 		
-		let colAdd = column * 4;
-		do Memory.poke(16482+colAdd, -4096); // 16386+(32*3)
-		do Memory.poke(18370+colAdd, -4096); // 16386+(32*62)
-		do Memory.poke(16485+colAdd, 15); // 16389+(32*3)
-		do Memory.poke(18373+colAdd, 15); // 16389+(32*62)
-		do Memory.poke(16483+colAdd, -1); // 16387+(32*3)
-		do Memory.poke(16484+colAdd, -1); // 16388+(32*3)
-		do Memory.poke(18371+colAdd, -1);
-		do Memory.poke(18372+colAdd, -1);
+		let add = rows[row] + (layer * 256) + (column * 4);
+		do Memory.poke(add, -4096);
+		let add = add + 1;
+		do Memory.poke(add, -1);
+		let add = add + 1;
+		do Memory.poke(add, -1);
+		let add = add + 1;
+		do Memory.poke(add, 15); // 16389+(32*3)=16485
+		let add = add + 29;
 		
-		do Graphics.drawHeader(16515+colAdd, value, symbol);
+		do Graphics.drawHeader(add+1, value, symbol);
 
-		let i = 128;
-		let leftSide = 16386+colAdd;
-		let rightSide = 16389+colAdd;
-		while (i < 1984) {
-		    do Memory.poke(leftSide+i, 4096);
-			do Memory.poke(rightSide+i, 8);
-			let i = i + 32;
+		let i = 58;
+		let leftSide = add;
+		let rightSide = add+3;
+		while (i > 0) {
+		    do Memory.poke(leftSide, 4096);
+			let leftSide = leftSide + 32;
+			do Memory.poke(rightSide, 8);
+			let rightSide = rightSide + 32;
+			let i = i - 1;
         }
+		
+		let add = leftSide;
+		do Memory.poke(add, -4096);
+		let add = add + 1;
+		do Memory.poke(add, -1);
+		let add = add + 1;
+		do Memory.poke(add, -1);
+		let add = add + 1;
+		do Memory.poke(add, 15);
 
 		return;
 	}
 	
-	function void drawClosedCardFull(int column) {
+	function void drawClosedCardFull(int column, int row, int layer) {
 	    var int add;
 		var int i;
 
-	    let add = (column * 4) + 16482;
+	    let add = rows[row] + (layer * 256) + (column * 4);
 		do Memory.poke(add, -4096); // 16386+(32*3)
 		let add = add + 1;
 		do Memory.poke(add, -1); // 16387+(32*3)
@@ -296,11 +312,11 @@ class Graphics {
 		return;
 	}
 	
-	function void drawClosedCardPart(int column) {
+	function void drawClosedCardPart(int column, int row, int layer) {
 	    var int add;
 		var int i;
 
-	    let add = (column * 4) + 16482;
+	    let add = rows[row] + (layer * 256) + (column * 4);
 		do Memory.poke(add, -4096); // 16386+(32*3)
 		let add = add + 1;
 		do Memory.poke(add, -1); // 16387+(32*3)
@@ -330,28 +346,33 @@ class Graphics {
 		return;
 	}
 
-	function void drawCardPart(int column, int value, int symbol) {
-	    var int memAddress;
+	function void drawCardPart(int column, int row, int layer, int value, int symbol) {
 		var int i;
-		var int colAdd;
+		var int add;
 		var int leftSide;
 		var int rightSide;
 		
-		let colAdd = column * 4;
-		do Memory.poke(16482+colAdd, -4096); // 16386+(32*3)
-		do Memory.poke(16485+colAdd, 15); // 16389+(32*3)
-		do Memory.poke(16483+colAdd, -1); // 16387+(32*3)
-		do Memory.poke(16484+colAdd, -1); // 16388+(32*3)
+		let add = rows[row] + (layer * 256) + (column * 4);
+		do Memory.poke(add, -4096);
+		let add = add + 1;
+		do Memory.poke(add, -1);
+		let add = add + 1;
+		do Memory.poke(add, -1);
+		let add = add + 1;
+		do Memory.poke(add, 15);
+		let add = add + 29;
 		
-		do Graphics.drawHeader(16515+colAdd, value, symbol);
+		do Graphics.drawHeader(add+1, value, symbol);
 
-		let i = 128;
-		let leftSide = 16386+colAdd;
-		let rightSide = 16389+colAdd;
-		while (i < 352) {
-		    do Memory.poke(leftSide+i, 4096);
-			do Memory.poke(rightSide+i, 8);
-			let i = i + 32;
+		let i = 7;
+		let leftSide = add;
+		let rightSide = add + 3;
+		while (i > 0) {
+		    do Memory.poke(leftSide, 4096);
+			let leftSide = leftSide + 32;
+			do Memory.poke(rightSide, 8);
+			let rightSide = rightSide + 32;
+			let i = i - 1;
         }
 
 		return;

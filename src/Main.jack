@@ -8,22 +8,42 @@ class Main {
 		var Card card4;
 		var Card card5;
 		var Card card6;
+		var Card card11;
+		var Card card12;
+		var Card card13;
+		var Card card14;
+		var Card card15;
 		do Graphics.init();
 
 		let card0 = Card.new(1, 0, 0, false, true);
-		do card0.draw();
+		do card0.draw(0, 0);
 	    
-		let card1 = Card.new(4, 1, 1, false, true);
-		do card1.draw();
+		let card1 = Card.new(4, 1, 1, true, true);
+		do card1.draw(0, 0);
 		
 		let card4 = Card.new(4, 1, 4, false, false);
-		do card4.draw();
+		do card4.draw(0, 0);
 		
 		let card5 = Card.new(4, 1, 5, true, false);
-		do card5.draw();
+		do card5.draw(0, 0);
 		
 		let card6 = Card.new(11, 2, 6, true, true);
-		do card6.draw();
+		do card6.draw(0, 0);
+		
+		let card11 = Card.new(2, 3, 0, false, true);
+		do card11.draw(1, 0);
+		
+		let card12 = Card.new(3, 3, 1, false, false);
+		do card12.draw(1, 0);
+		
+		let card13 = Card.new(8, 3, 1, false, true);
+		do card13.draw(1, 1);
+		
+		let card14 = Card.new(3, 3, 1, true, true);
+		do card14.draw(1, 2);
+
+		let card15 = Card.new(3, 3, 2, true, false);
+		do card15.draw(1, 0);
 
 		do card0.dispose();
         do card1.dispose();
