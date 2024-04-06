@@ -50,6 +50,9 @@ class Main {
 		
 		do Graphics.selectSubdeck(1, 1, 1, 2);
 		//do Graphics.removeSubdeckSelection(1, 1, 1, 2);
+		
+		//do Graphics.eraseFullCard(1, 1, 2);
+		//do Graphics.eraseCardPart(1, 1, 1);
 
 		do card0.dispose();
         do card1.dispose();

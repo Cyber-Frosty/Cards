@@ -429,6 +429,27 @@ class Graphics {
 		return;
 	}
 	
+	function void eraseFullCard(int column, int row, int layer) {
+	    var int add;
+		var int i;
+		var int j;
+
+		let add = rows[row] + (layer * 256) + (column * 4);
+		let i = 60;
+		while (i > 0) {
+		    let j = 4;
+			while (j > 0) {
+			    do Memory.poke(add, 0);
+		        let add = add + 1;
+				let j = j - 1;
+			}
+			let add = add + 28;
+			let i = i - 1;
+		}
+		
+		return;
+	}
+	
 	function void drawClosedCardPart(int column, int row, int layer) {
 	    var int add;
 		var int i;
@@ -477,6 +498,27 @@ class Graphics {
 			let i = i - 1;
         }
 
+		return;
+	}
+	
+	function void eraseCardPart(int column, int row, int layer) {
+	    var int add;
+		var int i;
+		var int j;
+
+		let add = rows[row] + (layer * 256) + (column * 4);
+		let i = 8;
+		while (i > 0) {
+		    let j = 4;
+			while (j > 0) {
+			    do Memory.poke(add, 0);
+		        let add = add + 1;
+				let j = j - 1;
+			}
+			let add = add + 28;
+			let i = i - 1;
+		}
+		
 		return;
 	}
 }
