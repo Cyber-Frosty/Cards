@@ -1,0 +1,104 @@
+class Pile {
+    field Stack stack;
+    field int column;
+
+    field boolean isOnBoard;
+    field boolean isTalonClosed;
+    field boolean isTalonOpened;
+    field boolean isFoundation;
+    field int foundation;
+
+    constructor Pile new(int c, boolean b, boolean t1, boolean t2, boolean f1, int f2) {
+        let stack = Stack.new();
+        let column = c;
+        let isOnBoard = b;
+        let isTalonClosed = t1;
+        let isTalonOpened = t2;
+        let isFoundation = f1;
+        let foundation = f2;
+        return this;
+    }
+
+    method boolean canAdded(Card card) {
+        var boolean isEmpty;
+        var Card currentHead;
+        var int currentSuit;
+        var int cardSuit;
+        var int checkSuit;
+        var int currentValue;
+        var int cardValue;
+        var int checkValue;
+
+        if (~(isOnBoard)) {
+            return false;
+        }
+        let isEmpty = stack.empty();
+        if (isEmpty) {
+            let cardValue = card.getValue();
+            if (~(cardValue = 13)) {
+                return false;
+            }
+            return true;
+        }
+        let currentHead = stack.getHead();
+        let currentSuit = currentHead.getSuit();
+        let cardSuit = card.getSuit();
+        let checkSuit = currentSuit + cardSuit;
+        if (checkSuit < 2) {
+            return false;
+        }
+        if (checkSuit > 4) {
+            return false;
+        }
+        let currentValue = currentHead.getValue();
+        let cardValue = card.getValue();
+        let checkValue = currentValue - cardValue;
+        if (~(checkValue = 1)) {
+            return false;
+        }
+        return true;
+    }
+
+    method void addCard(Card card) {
+        do card.setColumn(column);
+        do stack.push(card);
+        return;
+    }
+
+    method void removeCard() {
+        do stack.pop();
+        return;
+    }
+
+    method Card peekCard() {
+        var Card card;
+
+        let card = stack.getHead();
+        return card;
+    }
+
+    // method void moveHead(Pile other) {
+    //     let card = do stack.pop();
+    //     if (card = null) {
+    //         return;
+    //     }
+    //     do other.push(card);
+    //     return;
+    // }
+
+    method boolean checkHead() {
+        var Card card;
+        var boolean isOpened;
+
+        let card = stack.getHead();
+        if (card = null) {
+            return false;
+        }
+        let isOpened = card.getIsOpened();
+        if (isOpened) {
+            return false;
+        }
+        do card.open();
+        return true;
+    }
+}

@@ -1,0 +1,28 @@
+class StackItem {
+    field Card card;
+    field StackItem previous;
+
+    constructor StackItem new(Card c, StackItem p) {
+        let card = c;
+        let previous = p;
+        return this;
+    }
+
+    method Card getCard() {
+        return card;
+    }
+
+    method StackItem getPrevious() {
+        return previous;
+    }
+
+    method void setPrevious(StackItem other) {
+        let previous = other;
+        return;
+    }
+
+    method void dispose() {
+		do Memory.deAlloc(this);
+		return;
+	}
+}

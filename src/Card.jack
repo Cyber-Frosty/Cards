@@ -47,4 +47,21 @@ class Card {
 	    let isFront = false;
 		return;
 	}
+	method int getSuit() {
+		return suit;
+	}
+	method int getValue() {
+		return value;
+	}
+	method int getIsOpened() {
+		return isOpened;
+	}
+	method void open() {
+		let isOpened = true;
+		return;
+	}
+	method void setColumn(int c) {
+		let column = c;
+		return;
+	}
 }

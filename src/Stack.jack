@@ -1,0 +1,56 @@
+class Stack {
+    field StackItem head;
+
+    constructor Stack new() {
+        return this;
+    }
+
+    method void push(Card card) {
+        var StackItem item;
+
+        let item = StackItem.new(card, head);
+        let head = item;
+        return;
+    }
+
+    method Card pop() {
+        var StackItem item;
+        var Card card;
+
+        if (head = null) {
+            return null;
+        }
+        let item = head;
+        let card = item.getCard();
+        let head = item.getPrevious();
+        do item.dispose();
+        return card;
+    }
+
+    method boolean empty() {
+        return (head = null);
+    }
+
+    method Card getHead() {
+        var Card card;
+
+        if (head = null) {
+            return null;
+        }
+
+        let card = head.getCard();
+        return card;
+    }
+
+    method void removeSubstack(StackItem substackRoot) {
+        let head = substackRoot.getPrevious();
+        do substackRoot.setPrevious(null);
+        return;
+    }
+
+    method void addSubstack(StackItem substackRoot, StackItem substackHead) {
+        do substackRoot.setPrevious(head);
+        let head = substackHead;
+        return;
+    }
+}
