@@ -217,16 +217,24 @@ class Game {
 		    return;
 		}
 		
-		let movedCard = pileTakeFrom.peekCard();
+		let movedCard = pileTakeFrom.getSubstackBottom();
 		let pileTo = foundations[movedCard.getSuit()];
 		let pileCard = pileTo.peekCard();
+		
+		if (pileCard = null) {
+		    if (movedCard.getValue() > 1) {
+			    return;
+			}
+		}
+		else {
+		    if (~(movedCard.getValue() - pileCard.getValue() = 1)) {
+			    return;
+			}
+		}
 		
 		let toMove = pileTakeFrom.takeCardsToMove();
 		do toMove.pop();
 	    do pileTo.addCardFirstLayer(movedCard);
-		//if (((pileCard = null) & (movedCard.getValue() = 1)) | (movedCard.getValue() - pileCard.getValue() = 1)) {
-		    
-		//}
 		
 		let pileTakeFrom = null;
 		do Graphics.addCursor(cursorColumn, cursorRow, 0);
