@@ -116,6 +116,36 @@ class Game {
 	    return;
 	}
 	
+	method void goLeft() {
+	    var boolean erase;
+		var Pile pileOn;
+	
+	    if (cursorColumn = 0) {
+		    return;
+		}
+		
+		if (editingSubstack) {
+		    let editingSubstack = false;
+		} else {
+		    do Graphics.removeCursor(cursorColumn, cursorRow, 0);
+		}
+		
+		let cursorColumn = cursorColumn - 1;
+		if ((cursorRow = 0) & (cursorColumn = 2)) {
+		    let cursorColumn = 1;
+		}
+		
+		if (~(pileTakeFrom = null)) {
+		    let pileOn = getCurrentPile();
+			if (pileOn = pileTakeFrom) {
+			    let editingSubstack = true;
+			    return;
+			}
+		}
+		do Graphics.addCursor(cursorColumn, cursorRow, 0);
+	    return;
+	}
+	
 	method void moveSubstack() {
 	    var Pile pileTo;
 	    var Card bottomCard;

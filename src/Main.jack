@@ -16,6 +16,7 @@ class Main {
 		do game.increaseSubstack();
 		do game.goRight();
 		do game.moveSubstack();
+		do game.goLeft();
 
 		return;
 	}
