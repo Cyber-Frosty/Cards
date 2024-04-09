@@ -1,0 +1,162 @@
+class Game {
+    field int cursorColumn;
+	field int cursorRow;
+	field Pile pileTakeFrom;
+	field boolean editingSubstack;
+	
+	field Array tableau;
+	field Array stock;
+	field Array foundations;
+	
+	constructor Game new() {
+	    var Pile tmpPile;
+	    var Card tmpCard1;
+		
+	    let cursorColumn = 0;
+		let cursorRow = 1;
+		let editingSubstack = false;
+		
+	    let pileTakeFrom = null;
+		
+		let stock = Array.new(2);
+		let foundations = Array.new(4);
+
+	    let tableau = Array.new(7);
+		let tmpPile = Pile.new(0, 1, true, false, false, false, 0);
+		let tmpCard1 = Card.new(10, 0, true, true);
+		do tmpPile.addCard(tmpCard1);
+		let tmpCard1 = Card.new(11, 1, true, true);
+		do tmpPile.addCard(tmpCard1);
+		let tmpCard1 = Card.new(13, 3, true, true);
+		do tmpPile.addCard(tmpCard1);
+		let tmpCard1 = Card.new(12, 0, true, true);
+		do tmpPile.addCard(tmpCard1);
+		let tableau[0] = tmpPile;
+		
+		let tmpPile = Pile.new(1, 1, true, false, false, false, 0);
+		let tableau[1] = tmpPile;
+		
+		do Graphics.addCursor(cursorColumn, cursorRow, 0);
+		
+		return this;
+	}
+	
+	method void selectSubstack() {
+	    if (pileTakeFrom = null) {
+		    if ((cursorRow = 0) & (cursorColumn = 0)) {
+				return;
+			}
+			let pileTakeFrom = getCurrentPile();
+		}
+		
+		do Graphics.removeCursor(cursorColumn, cursorRow, 0);
+		do pileTakeFrom.select();
+		let editingSubstack = true;
+		
+		return;
+	}
+	
+	method Pile getCurrentPile() {
+	    if (cursorRow = 1) {
+			return tableau[cursorColumn];
+		} else {
+			if (cursorColumn < 2) {
+				return stock[cursorColumn];
+			}
+            if (cursorColumn > 2) {
+				return foundations[cursorColumn - 3];
+			}
+		}
+		return null;
+	}
+	
+	method void increaseSubstack() {
+	    if (~(pileTakeFrom = null)) {
+		    do pileTakeFrom.increaseSubstack();
+		}
+		
+	    return;
+	}
+	
+	method void decreaseSubstack() {
+	    if (~(pileTakeFrom = null)) {
+		    do pileTakeFrom.decreaseSubstack();
+		}
+		
+	    return;
+	}
+	
+	method void goRight() {
+	    var boolean erase;
+		var Pile pileOn;
+		
+	    if (cursorColumn = 6) {
+		    return;
+		}
+		
+		if (editingSubstack) {
+		    let editingSubstack = false;
+		} else {
+		    do Graphics.removeCursor(cursorColumn, cursorRow, 0);
+		}
+		
+		let cursorColumn = cursorColumn + 1;
+		if ((cursorRow = 0) & (cursorColumn = 2)) {
+		    let cursorColumn = 3;
+		}
+		
+		if (~(pileTakeFrom = null)) {
+		    let pileOn = getCurrentPile();
+			if (pileOn = pileTakeFrom) {
+			    let editingSubstack = true;
+			    return;
+			}
+		}
+		do Graphics.addCursor(cursorColumn, cursorRow, 0);
+	    return;
+	}
+	
+	method void moveSubstack() {
+	    var Pile pileTo;
+	    var Card bottomCard;
+		var Stack toMove;
+		var int moveCount;
+		
+	    if (pileTakeFrom = null) {
+		    return;
+		}
+		
+		let moveCount = pileTakeFrom.getSelectedCount();
+		if (cursorRow = 1) {
+		    let pileTo = tableau[cursorColumn];
+			if (pileTo = pileTakeFrom) {
+			    return;
+			}
+		} 
+		else {
+		    if ((cursorColumn < 3) | (moveCount > 1)) {
+			    return;
+			}
+			let pileTo = foundations[cursorColumn - 3];
+		}
+		
+		let bottomCard = pileTakeFrom.getSubstackBottom();
+		if (~(pileTo.canAdded(bottomCard))) {
+		    return;
+		}
+	    
+		let toMove = pileTakeFrom.takeCardsToMove();
+		let pileTakeFrom = null;
+		
+		while (moveCount > 0) {
+		    let bottomCard = toMove.getHead();
+			do pileTo.addCard(bottomCard);
+			do toMove.pop();
+			let moveCount = moveCount - 1;
+		}
+		
+		do Graphics.addCursor(cursorColumn, cursorRow, 0);
+		do toMove.dispose();
+		return;
+	}
+}

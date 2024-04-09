@@ -1,17 +1,15 @@
 class Card {
 	field int value;
 	field int suit;
-	field int column;
 	field boolean isFront;
 	field boolean isOpened;
 
-	constructor Card new(int x, int y, int col, boolean front, boolean opened) {
+	constructor Card new(int x, int y, boolean front, boolean opened) {
 	    //col [0;6]
 		//value: 1-13 (11=jack, 12=queen, 13=king)
 		//suit: 0=diamond, 1=heart, 2=spade, 3=club
 	    let value = x;
 		let suit = y;
-		let column = col;
 		let isFront = front;
 		let isOpened = opened;
 		return this;
@@ -20,7 +18,7 @@ class Card {
 		do Memory.deAlloc(this);
 		return;
 	}
-	method void draw(int row, int layer) {
+	method void draw(int column, int row, int layer) {
 	    if (isFront) {
 		    if (isOpened) {
 			    do Graphics.drawFullCard(column, row, layer, value, suit);
@@ -53,15 +51,11 @@ class Card {
 	method int getValue() {
 		return value;
 	}
-	method int getIsOpened() {
+	method boolean opened() {
 		return isOpened;
 	}
 	method void open() {
 		let isOpened = true;
-		return;
-	}
-	method void setColumn(int c) {
-		let column = c;
 		return;
 	}
 }

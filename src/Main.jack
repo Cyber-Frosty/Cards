@@ -3,102 +3,116 @@
 /** Main */
 class Main {
 	function void main() {
-	    var Card card0;
-		var Card card1;
-		var Card card4;
-		var Card card5;
-		var Card card6;
-		var Card card11;
-		var Card card12;
-		var Card card13;
-		var Card card14;
-		var Card card15;
-		var Pile pile1;
-		var Pile pile2;
-		var Card pile1card1;
-		var Card pile1card2;
-		var Card pile2card1;
-		var Card someIntrstngCard;
-		var boolean checkMove;
-		do Graphics.init();
-
-		let card0 = Card.new(1, 0, 0, false, true);
-		do card0.draw(0, 0);
-	    
-		let card1 = Card.new(4, 1, 1, true, true);
-		do card1.draw(0, 0);
+	    var Game game;
 		
-		// let card4 = Card.new(4, 1, 4, false, false);
-		// do card4.draw(0, 0);
+	    do Graphics.init();
 		
-		let card5 = Card.new(4, 1, 5, true, false);
-		do card5.draw(0, 0);
-		
-		let card6 = Card.new(11, 2, 6, true, true);
-		do card6.draw(0, 0);
-		
-		let card11 = Card.new(2, 3, 0, false, true);
-		do card11.draw(1, 0);
-		
-		let card12 = Card.new(3, 3, 1, false, false);
-		do card12.draw(1, 0);
-		
-		let card13 = Card.new(8, 3, 1, false, true);
-		do card13.draw(1, 1);
-		
-		let card14 = Card.new(3, 3, 1, true, true);
-		do card14.draw(1, 2);
-
-		let card15 = Card.new(3, 3, 2, true, false);
-		do card15.draw(1, 0);
-		
-		do Graphics.addCursor(1, 0, 0);
-		//do Graphics.removeCursor(1, 0, 0);
-		
-		do Graphics.selectSubdeck(1, 1, 1, 2);
-		//do Graphics.removeSubdeckSelection(1, 1, 1, 2);
-		
-		//do Graphics.eraseFullCard(1, 1, 2);
-		//do Graphics.eraseCardPart(1, 1, 1);
-
-		do card0.dispose();
-        do card1.dispose();
-		do card6.dispose();
-
+		//do Main.cardsDemo();
 		//sry, sry, im sry
-
-		let pile1 = Pile.new(3, true, false, false, false, 0);
-		let pile2 = Pile.new(4, true, false, false, false, 0);
-
-		let pile1card1 = Card.new(10, 0, 3, false, false);
-		let pile1card2 = Card.new(5, 1, 3, true, true);
-		let pile2card1 = Card.new(6, 3, 4, true, true);
-
-		do pile1.addCard(pile1card1);
-		do pile1card1.draw(1, 0);
-		do pile1.addCard(pile1card2);
-		do pile1card2.draw(1, 1);
-		do pile2.addCard(pile2card1);
-		do pile2card1.draw(1, 0);
-
-		let someIntrstngCard = pile1.peekCard();
-		let checkMove = pile2.canAdded(someIntrstngCard);
-		if (checkMove) {
-			do pile1.removeCard();
-			do Graphics.eraseFullCard(3, 1, 1);
-
-			do pile1.checkHead();
-			do Graphics.eraseCardPart(3, 1, 0);
-			do pile1card1.putFront();
-			do pile1card1.draw(1, 0);
-
-			do pile2.addCard(someIntrstngCard);
-			do Graphics.eraseFullCard(4, 1, 0);
-			do pile2card1.putBack();
-			do pile2card1.draw(1, 0);
-			do someIntrstngCard.draw(1, 1);
-		}
+        //do Main.pilesDemo();
+		
+		let game = Game.new();
+		do game.selectSubstack();
+		do game.increaseSubstack();
+		do game.goRight();
+		do game.moveSubstack();
 
 		return;
 	}
+	
+	//function void pilesDemo() {
+	//	var Pile pile1;
+	//	var Pile pile2;
+	//	var Card pile1card1;
+	//	var Card pile1card2;
+	//	var Card pile2card1;
+	//	var Card someIntrstngCard;
+	//	var boolean checkMove;
+	
+	//	let pile1 = Pile.new(3, true, false, false, false, 0);
+	//	let pile2 = Pile.new(4, true, false, false, false, 0);
+
+	//	let pile1card1 = Card.new(10, 0, 3, false, false);
+	//	let pile1card2 = Card.new(5, 1, 3, true, true);
+	//	let pile2card1 = Card.new(6, 3, 4, true, true);
+
+	//	do pile1.addCard(pile1card1);
+	//	do pile1card1.draw(1, 0);
+	//	do pile1.addCard(pile1card2);
+	//	do pile1card2.draw(1, 1);
+	//	do pile2.addCard(pile2card1);
+	//	do pile2card1.draw(1, 0);
+
+	//	let someIntrstngCard = pile1.peekCard();
+	//	let checkMove = pile2.canAdded(someIntrstngCard);
+	//	if (checkMove) {
+	//		do pile1.removeCard();
+	//		do Graphics.eraseFullCard(3, 1, 1);
+
+	//		do pile1.checkHead();
+	//		do Graphics.eraseCardPart(3, 1, 0);
+	//		do pile1card1.putFront();
+	//		do pile1card1.draw(1, 0);
+
+	//		do pile2.addCard(someIntrstngCard);
+	//		do Graphics.eraseFullCard(4, 1, 0);
+	//		do pile2card1.putBack();
+	//		do pile2card1.draw(1, 0);
+	//		do someIntrstngCard.draw(1, 1);
+	//	}
+	//}
+	
+	//function void cardsDemo() {
+	//    var Card card0;
+	//	var Card card1;
+	//	var Card card4;
+	//	var Card card5;
+	//	var Card card6;
+	//	var Card card11;
+	//	var Card card12;
+	//	var Card card13;
+	//	var Card card14;
+	//	var Card card15;
+
+	//	let card0 = Card.new(1, 0, 0, false, true);
+	//	do card0.draw(0, 0);
+	    
+	//	let card1 = Card.new(4, 1, 1, true, true);
+	//	do card1.draw(0, 0);
+		
+	//	// let card4 = Card.new(4, 1, 4, false, false);
+	//	// do card4.draw(0, 0);
+		
+	//	let card5 = Card.new(4, 1, 5, true, false);
+	//	do card5.draw(0, 0);
+		
+	//	let card6 = Card.new(11, 2, 6, true, true);
+	//	do card6.draw(0, 0);
+		
+	//	let card11 = Card.new(2, 3, 0, false, true);
+	//	do card11.draw(1, 0);
+		
+	//	let card12 = Card.new(3, 3, 1, false, false);
+	//	do card12.draw(1, 0);
+		
+	//	let card13 = Card.new(8, 3, 1, false, true);
+	//	do card13.draw(1, 1);
+		
+	//	let card14 = Card.new(3, 3, 1, true, true);
+	//	do card14.draw(1, 2);
+
+	//	let card15 = Card.new(3, 3, 2, true, false);
+	//	do card15.draw(1, 0);
+		
+	//	do Graphics.addCursor(1, 0, 0);
+	//	//do Graphics.removeCursor(1, 0, 0);
+		
+	//	do Graphics.selectSubdeck(1, 1, 1, 2);
+	//	//do Graphics.removeSubdeckSelection(1, 1, 1, 2);
+		
+	//	//do Graphics.eraseFullCard(1, 1, 2);
+	//	//do Graphics.eraseCardPart(1, 1, 1);
+		
+	//	return;
+	//}
 }

@@ -1,6 +1,8 @@
 class Pile {
     field Stack stack;
+	field Stack toMove;
     field int column;
+	field int row;
 
     field boolean isOnBoard;
     field boolean isTalonClosed;
@@ -8,9 +10,11 @@ class Pile {
     field boolean isFoundation;
     field int foundation;
 
-    constructor Pile new(int c, boolean b, boolean t1, boolean t2, boolean f1, int f2) {
+    constructor Pile new(int c, int r, boolean b, boolean t1, boolean t2, boolean f1, int f2) {
         let stack = Stack.new();
+		let toMove = Stack.new();
         let column = c;
+		let row = r;
         let isOnBoard = b;
         let isTalonClosed = t1;
         let isTalonOpened = t2;
@@ -60,8 +64,19 @@ class Pile {
     }
 
     method void addCard(Card card) {
-        do card.setColumn(column);
+	    var int i;
+	    var Card tmpCard;
+		
+		let tmpCard = stack.getHead();
+		if (~(tmpCard = null)) {
+		    let i = stack.count() - 1;
+			do Graphics.eraseFullCardToPart(column, row, i);
+			do tmpCard.putBack();
+		}
+		
         do stack.push(card);
+		let i = stack.count() - 1;
+		do card.draw(column, row, i);
         return;
     }
 
@@ -94,11 +109,117 @@ class Pile {
         if (card = null) {
             return false;
         }
-        let isOpened = card.getIsOpened();
+        let isOpened = card.opened();
         if (isOpened) {
             return false;
         }
         do card.open();
         return true;
     }
+	
+	method void select() {
+	    var int layer;
+		var Card cardToMove;
+		
+		let layer = stack.count() - 1;
+		if (~(layer < 0)) {
+		    let cardToMove = stack.getHead();
+			do stack.pop();
+		    do toMove.push(cardToMove);
+		    do Graphics.selectSubdeck(column, row, layer, layer);
+		}
+	    
+		return;
+	}
+	
+	method void increaseSubstack() {
+	    var int stackCount;
+		var int lowerLayer;
+		var Card cardToMove;
+		var Card moveHead;
+		
+		let stackCount = stack.count();
+		if (stackCount > 0) {
+		    let cardToMove = stack.getHead();
+			if (~(cardToMove.opened())) {
+			    return;
+			}
+			let moveHead = toMove.getHead();
+			if (~(cardToMove.getValue() - moveHead.getValue() = 1)) {
+			    return;
+			}
+			if ((cardToMove.getSuit() < 2) & (moveHead.getSuit() < 2)) {
+			    return;
+			}
+			if ((cardToMove.getSuit() > 1) & (moveHead.getSuit() > 1)) {
+			    return;
+			}
+			let lowerLayer = toMove.count() + stackCount - 1;
+			do toMove.push(cardToMove);
+			do stack.pop();
+			do Graphics.removeSubdeckSelection(column, row, stackCount, lowerLayer);
+			do Graphics.selectSubdeck(column, row, stackCount - 1, lowerLayer);
+		}
+		return;
+	}
+	
+	method void decreaseSubstack() {
+	    var int moveCount;
+		var int stackCount;
+		var int lowerLayer;
+		var Card cardToReturn;
+		
+		let moveCount = toMove.count();
+		if (moveCount > 1) {
+		    let cardToReturn = stack.getHead();
+			let stackCount = stack.count();
+			let lowerLayer = stackCount + moveCount - 1;
+			do stack.push(cardToReturn);
+			do toMove.pop();
+			do Graphics.removeSubdeckSelection(column, row, stackCount, lowerLayer);
+			do Graphics.selectSubdeck(column, row, stackCount + 1, lowerLayer);
+		}
+		return;
+	}
+	
+	method int getSelectedCount() {
+	    return toMove.count();
+	}
+	
+	method Card getSubstackBottom() {
+	    return toMove.getHead();
+	}
+	
+	method Stack takeCardsToMove() {
+	    var Stack tmp;
+		var Card card;
+		var int stackCount;
+		var int moveCount;
+		var int i;
+		
+		let tmp = toMove;
+		let toMove = Stack.new();
+		let moveCount = tmp.count();
+		if (moveCount = 0) {
+		    return tmp;
+		}
+		
+		let stackCount = stack.count();
+		do Graphics.removeSubdeckSelection(column, row, stackCount, stackCount + moveCount - 1);		
+		let i = 1;
+		while (i < moveCount) {
+		    do Graphics.eraseCardPart(column, row, stackCount + i - 1);
+			let i = i + 1;
+		}
+		do Graphics.eraseFullCard(column, row, stackCount + i - 1);
+		
+		let card = stack.getHead();
+		if (~(card = null)) {
+		    do card.open();
+			do card.putFront();
+			do card.draw(column, row, stackCount - 1);
+		}
+		
+	    return tmp;
+	}
 }
