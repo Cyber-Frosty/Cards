@@ -63,7 +63,7 @@ class Pile {
         return true;
     }
 
-    method void addCard(Card card) {
+    method void addCardNewLayer(Card card) {
 	    var int i;
 	    var Card tmpCard;
 		
@@ -77,6 +77,21 @@ class Pile {
         do stack.push(card);
 		let i = stack.count() - 1;
 		do card.draw(column, row, i);
+        return;
+    }
+	
+	method void addCardFirstLayer(Card card) {
+	    var int i;
+	    var Card tmpCard;
+		
+		let tmpCard = stack.getHead();
+		if (~(tmpCard = null)) {
+			do Graphics.eraseFullCard(column, row, 0);
+			do tmpCard.putBack();
+		}
+		
+        do stack.push(card);
+		do card.draw(column, row, 0);
         return;
     }
 
@@ -191,17 +206,14 @@ class Pile {
 	}
 	
 	method Stack takeCardsToMove() {
-	    var Stack tmp;
 		var Card card;
 		var int stackCount;
 		var int moveCount;
 		var int i;
 		
-		let tmp = toMove;
-		let toMove = Stack.new();
-		let moveCount = tmp.count();
+		let moveCount = toMove.count();
 		if (moveCount = 0) {
-		    return tmp;
+		    return toMove;
 		}
 		
 		let stackCount = stack.count();
@@ -220,6 +232,6 @@ class Pile {
 			do card.draw(column, row, stackCount - 1);
 		}
 		
-	    return tmp;
+	    return toMove;
 	}
 }

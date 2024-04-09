@@ -7,16 +7,15 @@ class Main {
 		
 	    do Graphics.init();
 		
-		//do Main.cardsDemo();
-		//sry, sry, im sry
-        //do Main.pilesDemo();
-		
 		let game = Game.new();
 		do game.selectSubstack();
 		do game.increaseSubstack();
 		do game.goRight();
 		do game.moveSubstack();
 		do game.goLeft();
+		do game.selectSubstack();
+		
+		do game.moveToFoundation();
 
 		return;
 	}

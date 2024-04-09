@@ -10,7 +10,8 @@ class Game {
 	
 	constructor Game new() {
 	    var Pile tmpPile;
-	    var Card tmpCard1;
+	    var Card tmpCard;
+		var int i;
 		
 	    let cursorColumn = 0;
 		let cursorRow = 1;
@@ -20,17 +21,23 @@ class Game {
 		
 		let stock = Array.new(2);
 		let foundations = Array.new(4);
+		let i = 0;
+		while (i < 4) {
+		    let tmpPile = Pile.new(3 + i, 0, true, false, false, true, i);
+		    let foundations[i] = tmpPile;
+			let i = i + 1;
+		}
 
 	    let tableau = Array.new(7);
 		let tmpPile = Pile.new(0, 1, true, false, false, false, 0);
-		let tmpCard1 = Card.new(10, 0, true, true);
-		do tmpPile.addCard(tmpCard1);
-		let tmpCard1 = Card.new(11, 1, true, true);
-		do tmpPile.addCard(tmpCard1);
-		let tmpCard1 = Card.new(13, 3, true, true);
-		do tmpPile.addCard(tmpCard1);
-		let tmpCard1 = Card.new(12, 0, true, true);
-		do tmpPile.addCard(tmpCard1);
+		let tmpCard = Card.new(10, 0, true, true);
+		do tmpPile.addCardNewLayer(tmpCard);
+		let tmpCard = Card.new(1, 1, true, true);
+		do tmpPile.addCardNewLayer(tmpCard);
+		let tmpCard = Card.new(13, 3, true, true);
+		do tmpPile.addCardNewLayer(tmpCard);
+		let tmpCard = Card.new(12, 0, true, true);
+		do tmpPile.addCardNewLayer(tmpCard);
 		let tableau[0] = tmpPile;
 		
 		let tmpPile = Pile.new(1, 1, true, false, false, false, 0);
@@ -147,27 +154,34 @@ class Game {
 	}
 	
 	method void moveSubstack() {
-	    var Pile pileTo;
-	    var Card bottomCard;
-		var Stack toMove;
 		var int moveCount;
 		
 	    if (pileTakeFrom = null) {
 		    return;
 		}
 		
-		let moveCount = pileTakeFrom.getSelectedCount();
 		if (cursorRow = 1) {
-		    let pileTo = tableau[cursorColumn];
-			if (pileTo = pileTakeFrom) {
-			    return;
-			}
+		    do moveToTableau();
 		} 
 		else {
-		    if ((cursorColumn < 3) | (moveCount > 1)) {
+		    if (cursorColumn < 3) {
 			    return;
 			}
-			let pileTo = foundations[cursorColumn - 3];
+			do moveToFoundation();
+		}
+		
+		return;
+	}
+	
+	method void moveToTableau() {
+	    var Pile pileTo;
+	    var Card bottomCard;
+		var Stack toMove;
+		var int moveCount;
+		
+	    let pileTo = tableau[cursorColumn];
+		if (pileTo = pileTakeFrom) {
+			return;
 		}
 		
 		let bottomCard = pileTakeFrom.getSubstackBottom();
@@ -176,15 +190,45 @@ class Game {
 		}
 	    
 		let toMove = pileTakeFrom.takeCardsToMove();
-		let pileTakeFrom = null;
-		
+		let moveCount = toMove.count();
 		while (moveCount > 0) {
 		    let bottomCard = toMove.getHead();
-			do pileTo.addCard(bottomCard);
+			do pileTo.addCardNewLayer(bottomCard);
 			do toMove.pop();
 			let moveCount = moveCount - 1;
 		}
 		
+		let pileTakeFrom = null;
+		do Graphics.addCursor(cursorColumn, cursorRow, 0);
+		return;
+	}
+	
+	method void moveToFoundation() {
+	    var Pile pileTo;
+	    var Card movedCard;
+		var Card pileCard;
+		var Stack toMove;
+		var int moveCount;
+		var int suit;
+		
+		let moveCount = pileTakeFrom.getSelectedCount();
+		
+		if (moveCount > 1) {
+		    return;
+		}
+		
+		let movedCard = pileTakeFrom.peekCard();
+		let pileTo = foundations[movedCard.getSuit()];
+		let pileCard = pileTo.peekCard();
+		
+		let toMove = pileTakeFrom.takeCardsToMove();
+		do toMove.pop();
+	    do pileTo.addCardFirstLayer(movedCard);
+		//if (((pileCard = null) & (movedCard.getValue() = 1)) | (movedCard.getValue() - pileCard.getValue() = 1)) {
+		    
+		//}
+		
+		let pileTakeFrom = null;
 		do Graphics.addCursor(cursorColumn, cursorRow, 0);
 		do toMove.dispose();
 		return;
