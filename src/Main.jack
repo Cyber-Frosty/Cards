@@ -8,14 +8,15 @@ class Main {
 	    do Graphics.init();
 		
 		let game = Game.new();
-		do game.selectSubstack();
-		do game.increaseSubstack();
-		do game.goRight();
-		do game.moveSubstack();
-		do game.goLeft();
-		do game.selectSubstack();
+		do game.runGame();
+		//do game.selectSubstack();
+		//do game.increaseSubstack();
+		//do game.goRight();
+		//do game.moveSubstack();
+		//do game.goLeft();
+		//do game.selectSubstack();
 		
-		do game.moveToFoundation();
+		//do game.moveToFoundation();
 
 		return;
 	}

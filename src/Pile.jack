@@ -147,6 +147,24 @@ class Pile {
 		return;
 	}
 	
+	method void deselect() {
+	    var int upperLayer;
+		var int i;
+		var Card cardToMove;
+		
+		let upperLayer = stack.count();
+		let i = toMove.count();
+		do Graphics.removeSubdeckSelection(column, row, upperLayer, upperLayer + i - 1);
+		while (i > 0) {
+		    let cardToMove = toMove.getHead();
+			do toMove.pop();
+			do stack.push(cardToMove);
+		    let i = i - 1;
+		}
+		
+		return;
+	}
+	
 	method void increaseSubstack() {
 	    var int stackCount;
 		var int lowerLayer;
@@ -186,7 +204,7 @@ class Pile {
 		
 		let moveCount = toMove.count();
 		if (moveCount > 1) {
-		    let cardToReturn = stack.getHead();
+		    let cardToReturn = toMove.getHead();
 			let stackCount = stack.count();
 			let lowerLayer = stackCount + moveCount - 1;
 			do stack.push(cardToReturn);

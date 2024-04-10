@@ -1,4 +1,7 @@
 class Game {
+    field boolean gameOn;
+	field int previousKey;
+	
     field int cursorColumn;
 	field int cursorRow;
 	field Pile pileTakeFrom;
@@ -48,17 +51,108 @@ class Game {
 		return this;
 	}
 	
-	method void selectSubstack() {
-	    if (pileTakeFrom = null) {
-		    if ((cursorRow = 0) & (cursorColumn = 0)) {
-				return;
-			}
-			let pileTakeFrom = getCurrentPile();
+	method void runGame() {
+	    let gameOn = true;
+		while (gameOn) {
+		    do processKey();
 		}
 		
+		return;
+    }
+	
+	method void processKey()
+	{
+	    var int key;
+		
+		let key = Keyboard.keyPressed();
+		if (key = previousKey) {
+		    return;
+		}
+		let previousKey = key;
+		
+		if (key = 130) { //left
+		    do goLeft();
+			return;
+		}
+		if (key = 132) { //right
+		    do goRight();
+			return;
+		}
+		if (key = 131) { //up
+		    do processUp();
+			return;
+		}
+		if (key = 133) { //down
+		    do processDown();
+			return;
+		}
+		if (key = 128) { //enter
+		    do processEnter();
+			return;
+		}
+		if (key = 32) { //space
+			do moveToFoundation();
+			return;
+		}
+		
+		return;
+	}
+	
+	method void processUp() {
+	    if (editingSubstack) {
+		    do pileTakeFrom.increaseSubstack();
+		}
+		else {
+		    if (~(cursorColumn = 2)) {
+			    do goVertically(0);
+			}
+		}
+	    return;
+	}
+	
+	method void processDown() {
+	    if (editingSubstack) {
+		    do pileTakeFrom.decreaseSubstack();
+		}
+		else {
+		    do goVertically(1);
+		}
+	    return;
+	}
+	
+	method void processEnter() {
+	    if ((cursorRow = 0) & (cursorColumn = 0)) {
+		    // todo: stock action
+			return;
+		}
+	    if (pileTakeFrom = null) {
+		    do selectSubstack();
+		}
+		else {
+		    if (editingSubstack) {
+			    do deselectSubstack();
+			}
+			else {
+			    do moveSubstack();
+			}
+		}
+		return;
+	}
+	
+	method void selectSubstack() {
+	    let pileTakeFrom = getCurrentPile();
+		let editingSubstack = true;
 		do Graphics.removeCursor(cursorColumn, cursorRow, 0);
 		do pileTakeFrom.select();
-		let editingSubstack = true;
+		
+		return;
+	}
+	
+	method void deselectSubstack() {
+	    let pileTakeFrom = null;
+		let editingSubstack = false;
+		do pileTakeFrom.deselect();
+		do Graphics.addCursor(cursorColumn, cursorRow, 0);
 		
 		return;
 	}
@@ -75,22 +169,6 @@ class Game {
 			}
 		}
 		return null;
-	}
-	
-	method void increaseSubstack() {
-	    if (~(pileTakeFrom = null)) {
-		    do pileTakeFrom.increaseSubstack();
-		}
-		
-	    return;
-	}
-	
-	method void decreaseSubstack() {
-	    if (~(pileTakeFrom = null)) {
-		    do pileTakeFrom.decreaseSubstack();
-		}
-		
-	    return;
 	}
 	
 	method void goRight() {
@@ -124,7 +202,6 @@ class Game {
 	}
 	
 	method void goLeft() {
-	    var boolean erase;
 		var Pile pileOn;
 	
 	    if (cursorColumn = 0) {
@@ -142,6 +219,32 @@ class Game {
 		    let cursorColumn = 1;
 		}
 		
+		if (~(pileTakeFrom = null)) {
+		    let pileOn = getCurrentPile();
+			if (pileOn = pileTakeFrom) {
+			    let editingSubstack = true;
+			    return;
+			}
+		}
+		do Graphics.addCursor(cursorColumn, cursorRow, 0);
+	    return;
+	}
+	
+	method void goVertically(int goTo) {
+	    var Pile pileOn;
+		
+	    if (cursorRow = goTo) {
+		    return;
+		}
+		
+		if (editingSubstack) {
+		    let editingSubstack = false;
+		} else {
+		    do Graphics.removeCursor(cursorColumn, cursorRow, 0);
+		}
+		
+		let cursorRow = goTo;
+
 		if (~(pileTakeFrom = null)) {
 		    let pileOn = getCurrentPile();
 			if (pileOn = pileTakeFrom) {
@@ -210,6 +313,10 @@ class Game {
 		var Stack toMove;
 		var int moveCount;
 		var int suit;
+		
+		if (pileTakeFrom = null) {
+		    return;
+		}
 		
 		let moveCount = pileTakeFrom.getSelectedCount();
 		
