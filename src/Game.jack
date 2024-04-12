@@ -387,8 +387,9 @@ class Game {
 		
 		let toMove = pileTakeFrom.takeCardsToMove();
 		do toMove.pop();
+		do movedCard.erase();
 	    do pileTo.addCardFirstLayer(movedCard);
-		
+		do pileTakeFrom.redrawPileHead();
 		let pileTakeFrom = null;
 		do Graphics.addCursor(cursorColumn, cursorRow, 0);
 		do toMove.dispose();
