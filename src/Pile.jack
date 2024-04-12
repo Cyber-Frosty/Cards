@@ -118,12 +118,10 @@ class Pile {
 	
 	method void select() {
 	    var int layer;
-		var Card cardToMove;
 		
 		let layer = stack.count() - 1;
 		if (~(layer < 0)) {
-		    let cardToMove = stack.pop();
-		    do toMove.push(cardToMove);
+		    do toMove.push(stack.pop());
 		    do drawSelection(layer, layer);
 		}
 	    
@@ -133,14 +131,12 @@ class Pile {
 	method void deselect() {
 	    var int upperLayer;
 		var int i;
-		var Card cardToMove;
 		
 		let upperLayer = stack.count();
 		let i = toMove.count();
 		do eraseSelection(upperLayer, upperLayer + i - 1);
 		while (i > 0) {
-		    let cardToMove = toMove.pop();
-			do stack.push(cardToMove);
+			do stack.push(toMove.pop());
 		    let i = i - 1;
 		}
 		

@@ -386,7 +386,7 @@ class Game {
 		}
 		
 		let toMove = pileTakeFrom.takeCardsToMove();
-		do toMove.pop();
+		let movedCard = toMove.pop();
 		do movedCard.erase();
 	    do pileTo.addCardFirstLayer(movedCard);
 		do pileTakeFrom.redrawPileHead();
@@ -396,7 +396,6 @@ class Game {
 		}
 		let pileTakeFrom = null;
 		let editingSubstack = false;
-		do toMove.dispose();
 		return;
 	}
 }
