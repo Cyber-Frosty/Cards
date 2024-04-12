@@ -138,8 +138,7 @@ class Pile {
 		
 		let layer = stack.count() - 1;
 		if (~(layer < 0)) {
-		    let cardToMove = stack.getHead();
-			do stack.pop();
+		    let cardToMove = stack.pop();
 		    do toMove.push(cardToMove);
 		    do Graphics.selectSubdeck(column, row, layer, layer);
 		}
@@ -156,8 +155,7 @@ class Pile {
 		let i = toMove.count();
 		do Graphics.removeSubdeckSelection(column, row, upperLayer, upperLayer + i - 1);
 		while (i > 0) {
-		    let cardToMove = toMove.getHead();
-			do toMove.pop();
+		    let cardToMove = toMove.pop();
 			do stack.push(cardToMove);
 		    let i = i - 1;
 		}
@@ -251,5 +249,24 @@ class Pile {
 		}
 		
 	    return toMove;
+	}
+
+	method boolean isEmpty() {
+		return stack.empty();
+	}
+
+	method void selectAll() {
+		var int layer;
+		var Card cardToMove;
+		
+		let layer = stack.count() - 1;
+		while (~(layer < 0)) {
+		    let cardToMove = stack.pop();
+			do cardToMove.close();
+		    do toMove.push(cardToMove);
+		    do Graphics.selectSubdeck(column, row, layer, layer);
+		}
+	    
+		return;
 	}
 }

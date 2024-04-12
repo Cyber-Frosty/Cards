@@ -23,6 +23,15 @@ class Game {
 	    let pileTakeFrom = null;
 		
 		let stock = Array.new(2);
+		let tmpPile = Pile.new(0, 0, false, true, false, false, 0);
+		let tmpCard = Card.new(6, 3, false, false);
+		do tmpPile.addCardFirstLayer(tmpCard);
+		let tmpCard = Card.new(4, 2, false, false);
+		do tmpPile.addCardFirstLayer(tmpCard);
+		let tmpCard = Card.new(7, 0, true, false);
+		do tmpPile.addCardFirstLayer(tmpCard);
+		let stock[0] = tmpPile;
+		let stock[1] = Pile.new(1, 0, false, false, true, false, 0);
 		let foundations = Array.new(4);
 		let i = 0;
 		while (i < 4) {
@@ -42,9 +51,13 @@ class Game {
 		let tmpCard = Card.new(12, 0, true, true);
 		do tmpPile.addCardNewLayer(tmpCard);
 		let tableau[0] = tmpPile;
-		
-		let tmpPile = Pile.new(1, 1, true, false, false, false, 0);
-		let tableau[1] = tmpPile;
+
+		let i = 1;
+		while (i < 7) {
+			let tmpPile = Pile.new(i, 1, true, false, false, false, 0);
+			let tableau[i] = tmpPile;
+			let i = i + 1;
+		}
 		
 		do Graphics.addCursor(cursorColumn, cursorRow, 0);
 		
@@ -122,7 +135,7 @@ class Game {
 	
 	method void processEnter() {
 	    if ((cursorRow = 0) & (cursorColumn = 0)) {
-		    // todo: stock action
+		    do scrollStock();
 			return;
 		}
 	    if (pileTakeFrom = null) {
@@ -138,6 +151,37 @@ class Game {
 		}
 		return;
 	}
+
+	method void scrollStock() {
+		var Pile closedStock;
+		var Pile openStock;
+
+		var Stack movedStack;
+		var Card movedCard;
+		var int moveCount;
+
+		let closedStock = stock[0];
+		let openStock = stock[1];
+
+		if (closedStock.isEmpty()) {
+			do openStock.selectAll();
+			let movedStack = openStack.takeCardsToMove();
+			let moveCount = movedStack.count();
+			while (moveCount > 0) {
+				let movedCard = movedStack.pop();
+				do closedStock.addCardFirstLayer(movedCard);
+				let moveCount = moveCount - 1;
+			}
+			return;
+		}
+		do closedStock.select();
+		let movedStack = closedStock.takeCardsToMove();
+		let movedCard = movedStack.pop();
+		do movedCard.open();
+		do openStock.addCardFirstLayer(movedCard);
+
+		return;
+	}
 	
 	method void selectSubstack() {
 	    let pileTakeFrom = getCurrentPile();
@@ -149,9 +193,9 @@ class Game {
 	}
 	
 	method void deselectSubstack() {
-	    let pileTakeFrom = null;
-		let editingSubstack = false;
 		do pileTakeFrom.deselect();
+		let pileTakeFrom = null;
+		let editingSubstack = false;
 		do Graphics.addCursor(cursorColumn, cursorRow, 0);
 		
 		return;

@@ -58,4 +58,8 @@ class Card {
 		let isOpened = true;
 		return;
 	}
+	method void close() {
+		let isOpened = false;
+		return;
+	}
 }
