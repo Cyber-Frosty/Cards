@@ -3,6 +3,10 @@ class Card {
 	field int suit;
 	field boolean isFront;
 	field boolean isOpened;
+	
+	field int currentColumn;
+	field int currentRow;
+	field int currentLayer;
 
 	constructor Card new(int x, int y, boolean front, boolean opened) {
 	    //col [0;6]
@@ -35,14 +39,34 @@ class Card {
 			    do Graphics.drawClosedCardPart(column, row, layer);
 			}
 		}
+		
+		let currentColumn = column;
+		let currentRow = row;
+		let currentLayer = layer;
+		
+		return;
+	}
+	method void erase() {
+	    if (isFront) {
+		    do Graphics.eraseFullCard(currentColumn, currentRow, currentLayer);
+		}
+		else {
+		    do Graphics.eraseCardPart(currentColumn, currentRow, currentLayer);
+		}
 		return;
 	}
 	method void putFront() {
 	    let isFront = true;
 		return;
 	}
-	method void putBack() {
+	method void putBackAndErasePart() {
 	    let isFront = false;
+		do Graphics.eraseFullCardToPart(currentColumn, currentRow, currentLayer);
+		return;
+	}
+	method void putBackAndEraseFull() {
+	    let isFront = false;
+		do Graphics.eraseFullCard(currentColumn, currentRow, currentLayer);
 		return;
 	}
 	method int getSuit() {

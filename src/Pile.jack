@@ -48,6 +48,16 @@ class Pile {
         }
         return true;
     }
+	
+	method void drawSelection(int upperLayer, int lowerLayer) {
+	    do Graphics.selectSubdeck(column, row, upperLayer, lowerLayer);
+		return;
+	}
+	
+	method void eraseSelection(int upperLayer, int lowerLayer) {
+	    do Graphics.removeSubdeckSelection(column, row, upperLayer, lowerLayer);
+		return;
+	}
 
     method void addCardNewLayer(Card card) {
 	    var int i;
@@ -55,9 +65,7 @@ class Pile {
 		
 		let tmpCard = stack.getHead();
 		if (~(tmpCard = null)) {
-		    let i = stack.count() - 1;
-			do Graphics.eraseFullCardToPart(column, row, i);
-			do tmpCard.putBack();
+			do tmpCard.putBackAndErasePart();
 		}
 		
         do stack.push(card);
@@ -72,8 +80,7 @@ class Pile {
 		
 		let tmpCard = stack.getHead();
 		if (~(tmpCard = null)) {
-			do Graphics.eraseFullCard(column, row, 0);
-			do tmpCard.putBack();
+			do tmpCard.putBackAndEraseFull();
 		}
 		
         do stack.push(card);
@@ -117,7 +124,7 @@ class Pile {
 		if (~(layer < 0)) {
 		    let cardToMove = stack.pop();
 		    do toMove.push(cardToMove);
-		    do Graphics.selectSubdeck(column, row, layer, layer);
+		    do drawSelection(layer, layer);
 		}
 	    
 		return;
@@ -130,7 +137,7 @@ class Pile {
 		
 		let upperLayer = stack.count();
 		let i = toMove.count();
-		do Graphics.removeSubdeckSelection(column, row, upperLayer, upperLayer + i - 1);
+		do eraseSelection(upperLayer, upperLayer + i - 1);
 		while (i > 0) {
 		    let cardToMove = toMove.pop();
 			do stack.push(cardToMove);
@@ -165,8 +172,8 @@ class Pile {
 			let lowerLayer = toMove.count() + stackCount - 1;
 			do toMove.push(cardToMove);
 			do stack.pop();
-			do Graphics.removeSubdeckSelection(column, row, stackCount, lowerLayer);
-			do Graphics.selectSubdeck(column, row, stackCount - 1, lowerLayer);
+			do eraseSelection(stackCount, lowerLayer);
+			do drawSelection(stackCount - 1, lowerLayer);
 		}
 		return;
 	}
@@ -184,8 +191,8 @@ class Pile {
 			let lowerLayer = stackCount + moveCount - 1;
 			do stack.push(cardToReturn);
 			do toMove.pop();
-			do Graphics.removeSubdeckSelection(column, row, stackCount, lowerLayer);
-			do Graphics.selectSubdeck(column, row, stackCount + 1, lowerLayer);
+			do eraseSelection(stackCount, lowerLayer);
+			do drawSelection(stackCount + 1, lowerLayer);
 		}
 		return;
 	}
@@ -199,7 +206,6 @@ class Pile {
 	}
 	
 	method Stack takeCardsToMove() {
-		var Card card;
 		var int stackCount;
 		var int moveCount;
 		var int i;
@@ -210,22 +216,24 @@ class Pile {
 		}
 		
 		let stackCount = stack.count();
-		do Graphics.removeSubdeckSelection(column, row, stackCount, stackCount + moveCount - 1);		
-		let i = 1;
-		while (i < moveCount) {
-		    do Graphics.eraseCardPart(column, row, stackCount + i - 1);
-			let i = i + 1;
-		}
-		do Graphics.eraseFullCard(column, row, stackCount + i - 1);
+		do eraseSelection(stackCount, stackCount + moveCount - 1);		
+		
+	    return toMove;
+	}
+	
+	method void redrawPileHead() {
+	    var Card card;
+		var int stackCount;
 		
 		let card = stack.getHead();
 		if (~(card = null)) {
+		    let stackCount = stack.count();
 		    do card.open();
 			do card.putFront();
 			do card.draw(column, row, stackCount - 1);
 		}
-		
-	    return toMove;
+
+		return;
 	}
 
 	method boolean isEmpty() {

@@ -323,7 +323,7 @@ class Game {
 	
 	method void moveToTableau() {
 	    var Pile pileTo;
-	    var Card bottomCard;
+	    var Card card;
 		var Stack toMove;
 		var int moveCount;
 		
@@ -332,20 +332,21 @@ class Game {
 			return;
 		}
 		
-		let bottomCard = pileTakeFrom.getSubstackBottom();
-		if (~(pileTo.canAddedToTableau(bottomCard))) {
+		let card = pileTakeFrom.getSubstackBottom();
+		if (~(pileTo.canAddedToTableau(card))) {
 		    return;
 		}
 	    
 		let toMove = pileTakeFrom.takeCardsToMove();
 		let moveCount = toMove.count();
 		while (moveCount > 0) {
-		    let bottomCard = toMove.getHead();
-			do pileTo.addCardNewLayer(bottomCard);
-			do toMove.pop();
+		    let card = toMove.pop();
+			do card.erase();
+			do pileTo.addCardNewLayer(card);
 			let moveCount = moveCount - 1;
 		}
 		
+		do pileTakeFrom.redrawPileHead();
 		let pileTakeFrom = null;
 		do Graphics.addCursor(cursorColumn, cursorRow, 0);
 		return;
