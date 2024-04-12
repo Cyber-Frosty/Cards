@@ -390,8 +390,11 @@ class Game {
 		do movedCard.erase();
 	    do pileTo.addCardFirstLayer(movedCard);
 		do pileTakeFrom.redrawPileHead();
+
+		if (getCurrentPile() = pileTakeFrom) {
+		    do Graphics.addCursor(cursorColumn, cursorRow, 0);
+		}
 		let pileTakeFrom = null;
-		do Graphics.addCursor(cursorColumn, cursorRow, 0);
 		do toMove.dispose();
 		return;
 	}
