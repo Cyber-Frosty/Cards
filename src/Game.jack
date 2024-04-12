@@ -395,6 +395,7 @@ class Game {
 		    do Graphics.addCursor(cursorColumn, cursorRow, 0);
 		}
 		let pileTakeFrom = null;
+		let editingSubstack = false;
 		do toMove.dispose();
 		return;
 	}
