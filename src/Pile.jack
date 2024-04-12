@@ -4,26 +4,15 @@ class Pile {
     field int column;
 	field int row;
 
-    field boolean isOnBoard;
-    field boolean isTalonClosed;
-    field boolean isTalonOpened;
-    field boolean isFoundation;
-    field int foundation;
-
-    constructor Pile new(int c, int r, boolean b, boolean t1, boolean t2, boolean f1, int f2) {
+    constructor Pile new(int c, int r) {
         let stack = Stack.new();
 		let toMove = Stack.new();
         let column = c;
 		let row = r;
-        let isOnBoard = b;
-        let isTalonClosed = t1;
-        let isTalonOpened = t2;
-        let isFoundation = f1;
-        let foundation = f2;
         return this;
     }
 
-    method boolean canAdded(Card card) {
+    method boolean canAddedToTableau(Card card) {
         var boolean isEmpty;
         var Card currentHead;
         var int currentSuit;
@@ -33,9 +22,6 @@ class Pile {
         var int cardValue;
         var int checkValue;
 
-        if (~(isOnBoard)) {
-            return false;
-        }
         let isEmpty = stack.empty();
         if (isEmpty) {
             let cardValue = card.getValue();
@@ -106,15 +92,6 @@ class Pile {
         let card = stack.getHead();
         return card;
     }
-
-    // method void moveHead(Pile other) {
-    //     let card = do stack.pop();
-    //     if (card = null) {
-    //         return;
-    //     }
-    //     do other.push(card);
-    //     return;
-    // }
 
     method boolean checkHead() {
         var Card card;
@@ -264,7 +241,6 @@ class Pile {
 		    let cardToMove = stack.pop();
 			do cardToMove.close();
 		    do toMove.push(cardToMove);
-		    do Graphics.selectSubdeck(column, row, layer, layer);
 		}
 	    
 		return;

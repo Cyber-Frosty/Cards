@@ -23,7 +23,7 @@ class Game {
 	    let pileTakeFrom = null;
 		
 		let stock = Array.new(2);
-		let tmpPile = Pile.new(0, 0, false, true, false, false, 0);
+		let tmpPile = Pile.new(0, 0);
 		let tmpCard = Card.new(6, 3, false, false);
 		do tmpPile.addCardFirstLayer(tmpCard);
 		let tmpCard = Card.new(4, 2, false, false);
@@ -31,17 +31,17 @@ class Game {
 		let tmpCard = Card.new(7, 0, true, false);
 		do tmpPile.addCardFirstLayer(tmpCard);
 		let stock[0] = tmpPile;
-		let stock[1] = Pile.new(1, 0, false, false, true, false, 0);
+		let stock[1] = Pile.new(1, 0);
 		let foundations = Array.new(4);
 		let i = 0;
 		while (i < 4) {
-		    let tmpPile = Pile.new(3 + i, 0, true, false, false, true, i);
+		    let tmpPile = Pile.new(3 + i, 0);
 		    let foundations[i] = tmpPile;
 			let i = i + 1;
 		}
 
 	    let tableau = Array.new(7);
-		let tmpPile = Pile.new(0, 1, true, false, false, false, 0);
+		let tmpPile = Pile.new(0, 1);
 		let tmpCard = Card.new(10, 0, true, true);
 		do tmpPile.addCardNewLayer(tmpCard);
 		let tmpCard = Card.new(1, 1, true, true);
@@ -54,7 +54,7 @@ class Game {
 
 		let i = 1;
 		while (i < 7) {
-			let tmpPile = Pile.new(i, 1, true, false, false, false, 0);
+			let tmpPile = Pile.new(i, 1);
 			let tableau[i] = tmpPile;
 			let i = i + 1;
 		}
@@ -201,6 +201,7 @@ class Game {
 		return;
 	}
 	
+	//todo row col
 	method Pile getCurrentPile() {
 	    if (cursorRow = 1) {
 			return tableau[cursorColumn];
@@ -332,7 +333,7 @@ class Game {
 		}
 		
 		let bottomCard = pileTakeFrom.getSubstackBottom();
-		if (~(pileTo.canAdded(bottomCard))) {
+		if (~(pileTo.canAddedToTableau(bottomCard))) {
 		    return;
 		}
 	    

@@ -48,18 +48,6 @@ class Stack {
 	method int count() {
 	    return counter;
 	}
-
-    method void removeSubstack(StackItem substackRoot) {
-        let head = substackRoot.getPrevious();
-        do substackRoot.setPrevious(null);
-        return;
-    }
-
-    method void addSubstack(StackItem substackRoot, StackItem substackHead) {
-        do substackRoot.setPrevious(head);
-        let head = substackHead;
-        return;
-    }
 	
 	method void dispose() {
 		do Memory.deAlloc(this);
