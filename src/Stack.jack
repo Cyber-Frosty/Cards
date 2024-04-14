@@ -5,16 +5,28 @@ class Stack {
     constructor Stack new() {
         return this;
     }
+	
+	method void dispose() {
+	    if (~(head = null)) {
+		    do head.dispose();
+		}
+	    do Memory.deAlloc(this);
+		return;
+	}
+	
+	method void clear() {
+	    if (~(head = null)) {
+		    do head.dispose();
+		}
+		let head = null;
+		let counter = 0;
+		return;
+	}
 
     method void push(Card card) {
         var StackItem item;
         var Card oldCard;
 
-        // do card.putFront();
-        // if (~(head = null)) {
-        //     let oldCard = head.getCard();
-        //     do oldCard.putBack();
-        // }
         let item = StackItem.new(card, head);
         let head = item;
 		let counter = counter + 1;
@@ -24,7 +36,6 @@ class Stack {
     method Card pop() {
         var StackItem item;
         var Card card;
-        // var Card newHead;
 
         if (head = null) {
             return null;
@@ -32,11 +43,7 @@ class Stack {
         let item = head;
         let card = item.getCard();
         let head = item.getPrevious();
-        // if (~(head = null)) {
-        //     let newHead = head.getCard();
-        //     do newHead.putFront();
-        // }
-        // do item.dispose();
+        do item.delete();
 		let counter = counter - 1;
         return card;
     }
@@ -58,10 +65,5 @@ class Stack {
 	
 	method int count() {
 	    return counter;
-	}
-	
-	method void dispose() {
-		do Memory.deAlloc(this);
-		return;
 	}
 }

@@ -237,6 +237,11 @@ class Graphics {
 		
 		return;
 	}
+	
+	method void dispose() {
+	    do Memory.deAlloc(this);
+		return;
+	}
 
 	function int drawCardHorizontalLine(int address) {
 		do Memory.poke(address, -4096);

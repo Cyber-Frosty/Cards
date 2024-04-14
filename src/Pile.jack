@@ -11,6 +11,19 @@ class Pile {
 		let row = r;
         return this;
     }
+	
+	method void dispose() {
+	    do stack.dispose();
+		do toMove.dispose();
+	    do Memory.deAlloc(this);
+		return;
+	}
+	
+	method void deleteCards() {
+	    do stack.clear();
+		do toMove.clear();
+	    return;
+	}
 
     method boolean canAddedToTableau(Card card) {
         var boolean isEmpty;
@@ -54,6 +67,11 @@ class Pile {
 	
 	method void eraseSelection(int upperLayer, int lowerLayer) {
 	    do Graphics.removeSubdeckSelection(column, row, upperLayer * row, lowerLayer * row);
+		return;
+	}
+	
+	method void addCardNoGraphics(Card card) {
+	    do stack.push(card);
 		return;
 	}
 

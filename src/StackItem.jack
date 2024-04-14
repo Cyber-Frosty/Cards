@@ -7,6 +7,20 @@ class StackItem {
         let previous = p;
         return this;
     }
+	
+	method void dispose() {
+	    if (~(previous = null)) {
+		    do previous.dispose();
+		}
+		do card.dispose();
+	    do Memory.deAlloc(this);
+		return;
+	}
+	
+	method void delete() {
+	    do Memory.deAlloc(this);
+		return;
+	}
 
     method Card getCard() {
         return card;
@@ -20,9 +34,4 @@ class StackItem {
         let previous = other;
         return;
     }
-
-    method void dispose() {
-		do Memory.deAlloc(this);
-		return;
-	}
 }

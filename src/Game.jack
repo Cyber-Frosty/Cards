@@ -14,7 +14,56 @@ class Game {
 	field Array foundations;
 	
 	constructor Game new() {
+		var int i;
+
+	    let foundations = Array.new(4);
+		let i = 0;
+		while (i < 4) {
+		    let foundations[i] = Pile.new(3 + i, 0);
+			let i = i + 1;
+		}
+		
+		let tableau = Array.new(7);
+		let i = 0;
+		while (i < 7) {
+			let tableau[i] = Pile.new(i, 1);
+			let i = i + 1;
+		}
+		
+		let stock = Array.new(2);
+		let stock[0] = Pile.new(0, 0);
+		let stock[1] = Pile.new(1, 0);
+		
 	    return this;
+	}
+	
+	method void dispose() {
+	    var Pile tmpPile;
+	    var int i;
+		
+		let i = 0;
+		while (i < 4) {
+		    let tmpPile = foundations[i];
+		    do tmpPile.dispose();
+			let i = i + 1;
+		}
+		
+		let i = 0;
+		while (i < 7) {
+		    let tmpPile = tableau[i];
+		    do tmpPile.dispose();
+			let i = i + 1;
+		}
+		
+		let i = 0;
+		while (i < 2) {
+		    let tmpPile = stock[i];
+		    do tmpPile.dispose();
+			let i = i + 1;
+		}
+		
+	    do Memory.deAlloc(this);
+		return;
 	}
 	
 	method void runGame() {
@@ -34,12 +83,13 @@ class Game {
 	method void init() {
 	    var Pile tmpPile;
 	    var Card tmpCard;
-		var int i;
+        var int i;
 		var int a;
 		var int b;
 		var Array cards;
 
         do Screen.clearScreen();
+		do clear();
 		let gameOn = true;
 		let exitTriggered = false;
 		let cardsInGame = 52;
@@ -49,23 +99,14 @@ class Game {
 		
 	    let pileTakeFrom = null;
 
-		let foundations = Array.new(4);
-		let i = 0;
-		while (i < 4) {
-		    let tmpPile = Pile.new(3 + i, 0);
-		    let foundations[i] = tmpPile;
-			let i = i + 1;
-		}
-
 		let cards = getAllCards();
 
 		let a = 0;
 		let b = 0;
 
-		let tableau = Array.new(7);
 		while (a < 7) {
 			let i = 0;
-			let tmpPile = Pile.new(a, 1);
+			let tmpPile = tableau[a];
 			while (i < a) {
 				let tmpCard = cards[b];
 				do tmpPile.addCardNewLayer(tmpCard);
@@ -79,25 +120,49 @@ class Game {
 				do tmpPile.redrawPileHead(true);
 			}
 			
-			let tableau[a] = tmpPile;
 			let a = a + 1;
 		}
 
-		let stock = Array.new(2);
-
-		let tmpPile = Pile.new(0, 0);
+		let tmpPile = stock[0];
 		while (b < 52) {
 			let tmpCard = cards[b];
-			do tmpPile.addCardFirstLayer(tmpCard);
+			do tmpPile.addCardNoGraphics(tmpCard);
 			let b = b + 1;
 		}
 		let tmpCard = tmpPile.peekCard();
 		do tmpCard.putFront();
 		do tmpPile.redrawClosedStock();
 		let stock[0] = tmpPile;
-		let stock[1] = Pile.new(1, 0);
 		
 		do Graphics.addCursor(cursorColumn, cursorRow, 0);
+		
+		return;
+	}
+	
+	method void clear() {
+	    var Pile tmpPile;
+	    var int i;
+		
+		let i = 0;
+		while (i < 4) {
+		    let tmpPile = foundations[i];
+		    do tmpPile.deleteCards();
+			let i = i + 1;
+		}
+		
+		let i = 0;
+		while (i < 7) {
+		    let tmpPile = tableau[i];
+		    do tmpPile.deleteCards();
+			let i = i + 1;
+		}
+		
+		let i = 0;
+		while (i < 2) {
+		    let tmpPile = stock[i];
+		    do tmpPile.deleteCards();
+			let i = i + 1;
+		}
 		
 		return;
 	}
