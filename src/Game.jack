@@ -401,6 +401,7 @@ class Game {
 		    return;
 		}
 	    
+		do Graphics.removeCursor(cursorColumn, cursorRow, 0);
 		let toMove = pileTakeFrom.takeCardsToMove();
 		let moveCount = toMove.count();
 		while (moveCount > 0) {
