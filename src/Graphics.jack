@@ -261,6 +261,7 @@ class Graphics {
 		let i = 0;
 		while (i < 8) {
 		    do Memory.poke(rowAdd, valuePic[i] + suitPic[i]);
+			do Memory.poke(rowAdd + 1, 0);
 			let rowAdd = rowAdd + 32;
 			let i = i + 1;
         }

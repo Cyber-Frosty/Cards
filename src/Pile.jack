@@ -17,7 +17,6 @@ class Pile {
         var Card currentHead;
         var int currentSuit;
         var int cardSuit;
-        var int checkSuit;
         var int currentValue;
         var int cardValue;
         var int checkValue;
@@ -33,11 +32,10 @@ class Pile {
         let currentHead = stack.getHead();
         let currentSuit = currentHead.getSuit();
         let cardSuit = card.getSuit();
-        let checkSuit = currentSuit + cardSuit;
-        if (checkSuit < 2) {
+        if (currentSuit < 2 & cardSuit < 2) {
             return false;
         }
-        if (checkSuit > 4) {
+        if (currentSuit > 1 & cardSuit > 1) {
             return false;
         }
         let currentValue = currentHead.getValue();
@@ -224,7 +222,7 @@ class Pile {
 	    return toMove;
 	}
 	
-	method void redrawPileHead() {
+	method void redrawPileHead(boolean useLayers) {
 	    var Card card;
 		var int stackCount;
 		
@@ -233,7 +231,12 @@ class Pile {
 		    let stackCount = stack.count();
 		    do card.open();
 			do card.putFront();
-			do card.draw(column, row, stackCount - 1);
+			if (useLayers) {
+			    do card.draw(column, row, stackCount - 1);
+			}
+			else {
+			    do card.draw(column, row, 0);
+			}
 		}
 
 		return;
