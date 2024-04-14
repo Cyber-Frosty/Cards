@@ -8,7 +8,13 @@ class Stack {
 
     method void push(Card card) {
         var StackItem item;
+        var Card oldCard;
 
+        // do card.putFront();
+        // if (~(head = null)) {
+        //     let oldCard = head.getCard();
+        //     do oldCard.putBack();
+        // }
         let item = StackItem.new(card, head);
         let head = item;
 		let counter = counter + 1;
@@ -18,6 +24,7 @@ class Stack {
     method Card pop() {
         var StackItem item;
         var Card card;
+        // var Card newHead;
 
         if (head = null) {
             return null;
@@ -25,7 +32,11 @@ class Stack {
         let item = head;
         let card = item.getCard();
         let head = item.getPrevious();
-        do item.dispose();
+        // if (~(head = null)) {
+        //     let newHead = head.getCard();
+        //     do newHead.putFront();
+        // }
+        // do item.dispose();
 		let counter = counter - 1;
         return card;
     }

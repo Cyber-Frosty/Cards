@@ -50,12 +50,12 @@ class Pile {
     }
 	
 	method void drawSelection(int upperLayer, int lowerLayer) {
-	    do Graphics.selectSubdeck(column, row, upperLayer, lowerLayer);
+	    do Graphics.selectSubdeck(column, row, upperLayer * row, lowerLayer * row);
 		return;
 	}
 	
 	method void eraseSelection(int upperLayer, int lowerLayer) {
-	    do Graphics.removeSubdeckSelection(column, row, upperLayer, lowerLayer);
+	    do Graphics.removeSubdeckSelection(column, row, upperLayer * row, lowerLayer * row);
 		return;
 	}
 
@@ -88,9 +88,12 @@ class Pile {
         return;
     }
 
-    method void removeCard() {
-        do stack.pop();
-        return;
+    method Card removeCard() {
+		var Card card;
+
+		let card = stack.pop();
+		do card.erase();
+        return card;
     }
 
     method Card peekCard() {
@@ -118,10 +121,12 @@ class Pile {
 	
 	method void select() {
 	    var int layer;
+		var Card cardToMove;
 		
 		let layer = stack.count() - 1;
 		if (~(layer < 0)) {
-		    do toMove.push(stack.pop());
+		    let cardToMove = stack.pop();
+		    do toMove.push(cardToMove);
 		    do drawSelection(layer, layer);
 		}
 	    
@@ -131,12 +136,14 @@ class Pile {
 	method void deselect() {
 	    var int upperLayer;
 		var int i;
+		var Card cardToMove;
 		
 		let upperLayer = stack.count();
 		let i = toMove.count();
 		do eraseSelection(upperLayer, upperLayer + i - 1);
 		while (i > 0) {
-			do stack.push(toMove.pop());
+		    let cardToMove = toMove.pop();
+			do stack.push(cardToMove);
 		    let i = i - 1;
 		}
 		
@@ -232,21 +239,40 @@ class Pile {
 		return;
 	}
 
+	method void redrawClosedStock() {
+		var Card card;
+
+		let card = stack.getHead();
+		if (~(card = null)) {
+			do card.putFront();
+			do card.draw(column, row, 0);
+		}
+
+		return;
+	}
+
 	method boolean isEmpty() {
 		return stack.empty();
 	}
 
-	method void selectAll() {
-		var int layer;
-		var Card cardToMove;
-		
-		let layer = stack.count() - 1;
-		while (~(layer < 0)) {
-		    let cardToMove = stack.pop();
-			do cardToMove.close();
-		    do toMove.push(cardToMove);
+	method Stack getRefreshedStock() {
+		var Stack tmpStack;
+		var Card card;
+
+		let tmpStack = Stack.new();
+		let card = stack.pop();
+		do card.erase();
+		while (~(card = null)) {
+			do card.close();
+			do tmpStack.push(card);
+			let card = stack.pop();
 		}
 	    
+		return tmpStack;
+	}
+
+	method void refreshStock(Stack stock) {
+		let stack = stock;
 		return;
 	}
 }

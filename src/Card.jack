@@ -69,6 +69,10 @@ class Card {
 		do Graphics.eraseFullCard(currentColumn, currentRow, currentLayer);
 		return;
 	}
+	method void putBack() {
+		let isFront = false;
+		return;
+	}
 	method int getSuit() {
 		return suit;
 	}

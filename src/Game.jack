@@ -42,7 +42,7 @@ class Game {
 
 	    let tableau = Array.new(7);
 		let tmpPile = Pile.new(0, 1);
-		let tmpCard = Card.new(10, 0, true, true);
+		let tmpCard = Card.new(2, 1, true, true);
 		do tmpPile.addCardNewLayer(tmpCard);
 		let tmpCard = Card.new(1, 1, true, true);
 		do tmpPile.addCardNewLayer(tmpCard);
@@ -58,10 +58,51 @@ class Game {
 			let tableau[i] = tmpPile;
 			let i = i + 1;
 		}
+
+		do getAllCards();
 		
 		do Graphics.addCursor(cursorColumn, cursorRow, 0);
 		
 		return this;
+	}
+
+	method Array getAllCards() {
+		var Array ints;
+		var Array cards;
+		var Random rnd;
+		var int i;
+		var int j;
+		var int tmp;
+		var int suit;
+		var int value;
+		
+		let ints = Array.new(52);
+		let i = 0;
+		while (i < 52) {
+			let ints[i] = i;
+			let i = i + 1;
+		}
+
+		let rnd = Random.new(1);
+		let i = 51;
+		while (i > -1) {
+			let j = rnd.randRange(0, i);
+			let tmp = ints[i];
+			let ints[i] = ints[j];
+			let ints[j] = tmp;
+			let i = i - 1;
+		}
+		
+		let cards = Array.new(52);
+		let i = 0;
+		while (i < 52) {
+			let suit = ints[i] / 13;
+			let value = ints[i] - (suit * 13);
+			let cards[i] = Card.new(value, suit, false, false);
+			let i = i + 1;
+		}
+
+		return cards;
 	}
 	
 	method void runGame() {
@@ -156,34 +197,44 @@ class Game {
 		var Pile closedStock;
 		var Pile openStock;
 
-		var Stack movedStack;
-		var Card movedCard;
-		var int moveCount;
+		var Stack stockStack;
+		var Card card;
+
+		if (~(pileTakeFrom = null)) {
+			return;
+		}
 
 		let closedStock = stock[0];
 		let openStock = stock[1];
 
 		if (closedStock.isEmpty()) {
-			do openStock.selectAll();
-			let movedStack = openStack.takeCardsToMove();
-			let moveCount = movedStack.count();
-			while (moveCount > 0) {
-				let movedCard = movedStack.pop();
-				do closedStock.addCardFirstLayer(movedCard);
-				let moveCount = moveCount - 1;
+			let stockStack = openStock.getRefreshedStock();
+			do closedStock.refreshStock(stockStack); 
+			let card = closedStock.peekCard();
+			if (~(card = null)) {
+				do card.putFront();
+				do card.draw(0, 0, 0);
 			}
-			return;
 		}
-		do closedStock.select();
-		let movedStack = closedStock.takeCardsToMove();
-		let movedCard = movedStack.pop();
-		do movedCard.open();
-		do openStock.addCardFirstLayer(movedCard);
+		else {
+			let card = closedStock.removeCard();
+			do closedStock.redrawClosedStock();
+			do card.open();
+			do openStock.addCardFirstLayer(card);
+		}
 
+		do Graphics.addCursor(0, 0, 0);
 		return;
 	}
 	
 	method void selectSubstack() {
+		var Pile tmpPile;
+
+		let tmpPile = getCurrentPile();
+		if (tmpPile.isEmpty()) {
+			return;
+		}
+
 	    let pileTakeFrom = getCurrentPile();
 		let editingSubstack = true;
 		do Graphics.removeCursor(cursorColumn, cursorRow, 0);
