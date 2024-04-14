@@ -221,6 +221,9 @@ class Game {
 		let openStock = stock[1];
 
 		if (closedStock.isEmpty()) {
+			if (openStock.isEmpty()) {
+				return;
+			}
 			let stockStack = openStock.getRefreshedStock();
 			do closedStock.refreshStock(stockStack); 
 			let card = closedStock.peekCard();
