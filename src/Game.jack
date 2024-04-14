@@ -1,5 +1,7 @@
 class Game {
     field boolean gameOn;
+	field boolean exitTriggered;
+	field int cardsInGame;
 	field int previousKey;
 	
     field int cursorColumn;
@@ -12,13 +14,35 @@ class Game {
 	field Array foundations;
 	
 	constructor Game new() {
+	    return this;
+	}
+	
+	method void runGame() {
+	    do init();
+		while (gameOn) {
+		    do processKey();
+			let gameOn = ~exitTriggered & (cardsInGame > 0);
+		}
+		
+		return;
+    }
+	
+	method boolean isExitTriggered() {
+	    return exitTriggered;
+	}
+	
+	method void init() {
 	    var Pile tmpPile;
 	    var Card tmpCard;
 		var int i;
 		var int a;
 		var int b;
 		var Array cards;
-		
+
+        do Screen.clearScreen();
+		let gameOn = true;
+		let exitTriggered = false;
+		let cardsInGame = 52;
 	    let cursorColumn = 0;
 		let cursorRow = 1;
 		let editingSubstack = false;
@@ -75,7 +99,7 @@ class Game {
 		
 		do Graphics.addCursor(cursorColumn, cursorRow, 0);
 		
-		return this;
+		return;
 	}
 
 	method Array getAllCards() {
@@ -118,15 +142,6 @@ class Game {
 		return cards;
 	}
 	
-	method void runGame() {
-	    let gameOn = true;
-		while (gameOn) {
-		    do processKey();
-		}
-		
-		return;
-    }
-	
 	method void processKey()
 	{
 	    var int key;
@@ -159,6 +174,10 @@ class Game {
 		}
 		if (key = 32) { //space
 			do moveToFoundation();
+			return;
+		}
+		if (key = 140) { //esc
+		    let exitTriggered = true;
 			return;
 		}
 		
@@ -464,6 +483,7 @@ class Game {
 		}
 		let pileTakeFrom = null;
 		let editingSubstack = false;
+		let cardsInGame = cardsInGame - 1;
 		return;
 	}
 }

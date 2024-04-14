@@ -4,12 +4,68 @@
 class Main {
 	function void main() {
 	    var Game game;
+		var boolean continue;
 		
 	    do Graphics.init();
 		
+		do Main.startComment();
+		while (~continue) {
+		    let continue = Main.isPressedNotEsc();
+		}
 		let game = Game.new();
-		do game.runGame();
+		while (continue) {
+		    do game.runGame();
+			if (game.isExitTriggered()) {
+			    let continue = false;
+			}
+			else {
+			    do Main.endComment();
+			    let continue = Main.isPressedNotEsc();
+			}
+		}
 
 		return;
+	}
+	
+	function void startComment() {
+	    do Output.moveCursor(5, 30);
+		do Output.printString("KLONDIKE");
+		do Output.moveCursor(9, 15);
+		do Output.printString("Use ARROWS to move or edit substack");
+		do Output.moveCursor(10, 20);
+		do Output.printString("Use ENTER to select a pile");
+		do Output.moveCursor(11, 15);
+		do Output.printString("Use SPACE to place a card to stock");
+		do Output.moveCursor(12, 20);
+		do Output.printString("Use ESC to quit the game");
+		do Output.moveCursor(14, 19);
+		do Output.printString("Press any key to continue!");
+		
+		return;
+	}
+	
+	function void endComment() {
+	    do Output.moveCursor(10, 30);
+		do Output.printString("Game over");
+		do Output.moveCursor(11, 20);
+		do Output.printString("Press any key to try again");
+		do Output.moveCursor(12, 25);
+		do Output.printString("Or ESC to exit");
+		
+		return;
+	}
+	
+	function boolean isPressedNotEsc() {
+	    var int currentKey;
+		var int key;
+		
+		let currentKey = Keyboard.keyPressed();
+		let key = Keyboard.keyPressed();
+		while ((key = currentKey) | (key = 0)) {
+		    let currentKey = key;
+		    let key = Keyboard.keyPressed();
+		}
+		
+		return ~(key = 140);
 	}
 }
