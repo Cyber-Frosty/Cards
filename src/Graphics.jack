@@ -238,8 +238,32 @@ class Graphics {
 		return;
 	}
 	
-	method void dispose() {
-	    do Memory.deAlloc(this);
+	function void clearGraphicsData() {
+	    do diamond.dispose();
+		do heart.dispose();
+		do spade.dispose();
+		do club.dispose();
+		do suitAddresses.dispose();
+		
+		do ace.dispose();
+		do two.dispose();
+		do three.dispose();
+		do four.dispose();
+		do five.dispose();
+		do six.dispose();
+		do seven.dispose();
+		do eight.dispose();
+		do nine.dispose();
+		do ten.dispose();
+		do jack.dispose();
+		do queen.dispose();
+		do king.dispose();
+		do valueAddresses.dispose();
+		
+		do rows.dispose();
+		do leftArrow.dispose();
+		do rightArrow.dispose();
+
 		return;
 	}
 

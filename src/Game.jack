@@ -62,6 +62,9 @@ class Game {
 			let i = i + 1;
 		}
 		
+		do foundations.dispose();
+		do tableau.dispose();
+		do stock.dispose();
 	    do Memory.deAlloc(this);
 		return;
 	}
