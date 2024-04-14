@@ -32,10 +32,10 @@ class Pile {
         let currentHead = stack.getHead();
         let currentSuit = currentHead.getSuit();
         let cardSuit = card.getSuit();
-        if (currentSuit < 2 & cardSuit < 2) {
+        if ((currentSuit < 2) & (cardSuit < 2)) {
             return false;
         }
-        if (currentSuit > 1 & cardSuit > 1) {
+        if ((currentSuit > 1) & (cardSuit > 1)) {
             return false;
         }
         let currentValue = currentHead.getValue();
