@@ -3,6 +3,7 @@ class Stack {
 	field int counter;
 
     constructor Stack new() {
+	    let head = null;
         return this;
     }
 	

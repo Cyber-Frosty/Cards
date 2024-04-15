@@ -293,6 +293,7 @@ class Pile {
 	}
 
 	method void refreshStock(Stack stock) {
+	    do stack.dispose();
 		let stack = stock;
 		return;
 	}
