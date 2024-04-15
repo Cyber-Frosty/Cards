@@ -27,9 +27,11 @@ while (i < 52) {
 }
 ```
 * Реализовано перемещение множества карт (и куча проверок)
+
 ![](/img/Screenshot_1.png)
 ![](/img/Screenshot_2.png)
 * Вся графика (и её эпичные баги)
+
 ![](/img/Screenshot_3.png)
 ![](/img/Screenshot_10.png)
 ![](/img/Screenshot_6.png)
