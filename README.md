@@ -35,10 +35,10 @@ while (i < 52) {
 ![](/img/Screenshot_3.png)
 ![](/img/Screenshot_10.png)
 
-![](/img/Screenshot_6.png)
-![](/img/Screenshot_5.png)
 ![](/img/Screenshot_4.png)
 ![](/img/Screenshot_9.png)
+![](/img/Screenshot_6.png)
+![](/img/Screenshot_5.png)
 
 * Настоящий стек на связном списке для стопок карт (Stack.jack)
 * Много диспоузов
