@@ -279,6 +279,9 @@ class Game {
 		    do scrollStock();
 			return;
 		}
+		if ((cursorRow = 0) & (cursorColumn > 2)) {
+		    return;
+		}
 	    if (pileTakeFrom = null) {
 		    do selectSubstack();
 		}
