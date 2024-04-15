@@ -188,7 +188,7 @@ class Game {
 		}
 
 		// быбо
-		let rnd = Random.new(17);
+		let rnd = Random.new();
 		let i = 51;
 		while (i > -1) {
 			let j = rnd.randRange(0, i);
@@ -541,6 +541,8 @@ class Game {
 			    return;
 			}
 		}
+
+		do Graphics.removeCursor(cursorColumn, cursorRow, 0);
 		
 		let toMove = pileTakeFrom.takeCardsToMove();
 		let movedCard = toMove.pop();
@@ -548,9 +550,8 @@ class Game {
 	    do pileTo.addCardFirstLayer(movedCard);
 		do pileTakeFrom.redrawPileHead(~(pileTakeFrom = stock[1]));
 
-		if (getCurrentPile() = pileTakeFrom) {
-		    do Graphics.addCursor(cursorColumn, cursorRow, 0);
-		}
+		do Graphics.addCursor(cursorColumn, cursorRow, 0);
+		
 		let pileTakeFrom = null;
 		let editingSubstack = false;
 		let cardsInGame = cardsInGame - 1;

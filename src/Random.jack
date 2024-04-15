@@ -4,10 +4,9 @@ class Random {
     static int m;
     field int x;
 
-    constructor Random new(int s) {
-        let x = s;
+    constructor Random new() {
         if (x = 0) {
-            let x = 1;
+            let x = 17;
         }
         let a = 23;
         let c = 106;
