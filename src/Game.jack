@@ -357,8 +357,7 @@ class Game {
 		
 		return;
 	}
-	
-	//todo row col
+
 	method Pile getCurrentPile() {
 	    if (cursorRow = 1) {
 			return tableau[cursorColumn];
